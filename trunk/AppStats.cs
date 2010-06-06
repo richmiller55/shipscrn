@@ -17,6 +17,7 @@ namespace ShipScrn
         decimal totalHandlingBilled;
         decimal totalFreightBilled;
         decimal totalWeightProcessed;
+
         public AppStats()
         {
             InitializeVars();

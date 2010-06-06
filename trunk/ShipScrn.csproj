@@ -1,0 +1,158 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{30AF9589-D5D0-4ECB-A580-397A4895C7FE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ShipScrn</RootNamespace>
+    <AssemblyName>ShipScrn</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Epicor.Mfg.BO.ARInvoice, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.BO.ARInvoice.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.BO.Customer, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.BO.Customer.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.BO.CustShip, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.BO.CustShip.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.BO.InvcGrp, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.BO.InvcGrp.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.BO.SalesOrder, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.BO.SalesOrder.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.BO.TrackingDtl, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.BO.TrackingDtl.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.Core.BLConnectionPool, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.Core.BLConnectionPool.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.Core.Session, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.Core.Session.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.IF.IARInvoice, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.IF.IARInvoice.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.IF.ICustomer, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.IF.ICustomer.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.IF.ICustShip, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.IF.ICustShip.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.IF.IInvcGrp, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.IF.IInvcGrp.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.IF.ISalesOrder, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.IF.ISalesOrder.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.Mfg.IF.ITrackingDtl, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.IF.ITrackingDtl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppStats.cs" />
+    <Compile Include="ARInvoice.cs" />
+    <Compile Include="CustomerShip.cs" />
+    <Compile Include="FedExWriteBackReader.cs" />
+    <Compile Include="InvoiceGrp.cs" />
+    <Compile Include="LoginDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginDlg.Designer.cs">
+      <DependentUpon>LoginDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PackEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PackEntry.Designer.cs">
+      <DependentUpon>PackEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PackSlipInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="LoginDlg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LoginDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PackEntry.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PackEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Shipment.cs" />
+    <Compile Include="ShipMgr.cs" />
+    <Compile Include="VanAccess.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -43,7 +43,18 @@ namespace ShipScrn
             btnInvoice.Click += new EventHandler(btnInvoice_Click);
             btnTrackOnly.Click += new EventHandler(btnTrackOnly_Click);
             btnSkip.Click += new EventHandler(btnSkip_Click);
-            btnARBatch.Click += new EventHandler(btnARBatch_Click);
+            btnRunTillChange.Click += new EventHandler(btnRunTillChange_Click);
+            btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
+        }
+
+        void btnRunTillDone_Click(object sender, EventArgs e)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        void btnRunTillChange_Click(object sender, EventArgs e)
+        {
+            throw new Exception("The method or operation is not implemented.");
         }
         void setTrackingGrid()
         {

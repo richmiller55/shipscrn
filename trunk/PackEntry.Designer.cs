@@ -50,7 +50,6 @@ namespace ShipScrn
             this.btnFedExFileOpen = new System.Windows.Forms.Button();
             this.btnInvoice = new System.Windows.Forms.Button();
             this.tbOrderNo = new System.Windows.Forms.TextBox();
-            this.llTrackShipment = new System.Windows.Forms.LinkLabel();
             this.lbOrderNo = new System.Windows.Forms.Label();
             this.tbShipDate = new System.Windows.Forms.TextBox();
             this.lbShipDate = new System.Windows.Forms.Label();
@@ -65,7 +64,6 @@ namespace ShipScrn
             this.gbTrackingNos = new System.Windows.Forms.GroupBox();
             this.dgvTracking = new System.Windows.Forms.DataGridView();
             this.tbARBatch = new System.Windows.Forms.TextBox();
-            this.btnARBatch = new System.Windows.Forms.Button();
             this.tbProcessedInvoices = new System.Windows.Forms.TextBox();
             this.lbInvoiceGroup = new System.Windows.Forms.Label();
             this.grpAction = new System.Windows.Forms.GroupBox();
@@ -73,12 +71,17 @@ namespace ShipScrn
             this.lblInvoiceStatus = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.gbStatistics = new System.Windows.Forms.GroupBox();
-            this.tbNpacksFile = new System.Windows.Forms.TextBox();
-            this.tbNtrackingNumFile = new System.Windows.Forms.TextBox();
-            this.tbNpacksProcessed = new System.Windows.Forms.TextBox();
-            this.tbNtrackingNumProcessed = new System.Windows.Forms.TextBox();
-            this.lbPacksStats = new System.Windows.Forms.Label();
             this.lbTracking = new System.Windows.Forms.Label();
+            this.lbPacksStats = new System.Windows.Forms.Label();
+            this.tbNtrackingNumProcessed = new System.Windows.Forms.TextBox();
+            this.tbNpacksProcessed = new System.Windows.Forms.TextBox();
+            this.tbNtrackingNumFile = new System.Windows.Forms.TextBox();
+            this.tbNpacksFile = new System.Windows.Forms.TextBox();
+            this.tbBGBatch = new System.Windows.Forms.TextBox();
+            this.lbBGBatch = new System.Windows.Forms.Label();
+            this.gbArBatches = new System.Windows.Forms.GroupBox();
+            this.btnRunTillChange = new System.Windows.Forms.Button();
+            this.btnRunTillDone = new System.Windows.Forms.Button();
             this.gbShipAdr.SuspendLayout();
             this.gbTrackingNos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracking)).BeginInit();
@@ -86,6 +89,7 @@ namespace ShipScrn
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbStatistics.SuspendLayout();
+            this.gbArBatches.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbPackNo
@@ -251,14 +255,14 @@ namespace ShipScrn
             // 
             this.tbFedExFile.Location = new System.Drawing.Point(104, 12);
             this.tbFedExFile.Name = "tbFedExFile";
-            this.tbFedExFile.Size = new System.Drawing.Size(354, 20);
+            this.tbFedExFile.Size = new System.Drawing.Size(307, 20);
             this.tbFedExFile.TabIndex = 6;
             // 
             // btnFedExFileOpen
             // 
-            this.btnFedExFileOpen.Location = new System.Drawing.Point(475, 12);
+            this.btnFedExFileOpen.Location = new System.Drawing.Point(417, 13);
             this.btnFedExFileOpen.Name = "btnFedExFileOpen";
-            this.btnFedExFileOpen.Size = new System.Drawing.Size(107, 22);
+            this.btnFedExFileOpen.Size = new System.Drawing.Size(112, 22);
             this.btnFedExFileOpen.TabIndex = 8;
             this.btnFedExFileOpen.Text = "Get Write Back";
             this.btnFedExFileOpen.UseVisualStyleBackColor = true;
@@ -280,16 +284,6 @@ namespace ShipScrn
             this.tbOrderNo.Name = "tbOrderNo";
             this.tbOrderNo.Size = new System.Drawing.Size(100, 20);
             this.tbOrderNo.TabIndex = 11;
-            // 
-            // llTrackShipment
-            // 
-            this.llTrackShipment.AutoSize = true;
-            this.llTrackShipment.Location = new System.Drawing.Point(26, 121);
-            this.llTrackShipment.Name = "llTrackShipment";
-            this.llTrackShipment.Size = new System.Drawing.Size(82, 13);
-            this.llTrackShipment.TabIndex = 12;
-            this.llTrackShipment.TabStop = true;
-            this.llTrackShipment.Text = "Track Shipment";
             // 
             // lbOrderNo
             // 
@@ -405,20 +399,10 @@ namespace ShipScrn
             // 
             // tbARBatch
             // 
-            this.tbARBatch.Location = new System.Drawing.Point(680, 12);
+            this.tbARBatch.Location = new System.Drawing.Point(162, 18);
             this.tbARBatch.Name = "tbARBatch";
             this.tbARBatch.Size = new System.Drawing.Size(100, 20);
             this.tbARBatch.TabIndex = 27;
-            // 
-            // btnARBatch
-            // 
-            this.btnARBatch.ImageAlign = System.Drawing.ContentAlignment.TopRight;
-            this.btnARBatch.Location = new System.Drawing.Point(786, 12);
-            this.btnARBatch.Name = "btnARBatch";
-            this.btnARBatch.Size = new System.Drawing.Size(58, 23);
-            this.btnARBatch.TabIndex = 28;
-            this.btnARBatch.Text = "New";
-            this.btnARBatch.UseVisualStyleBackColor = true;
             // 
             // tbProcessedInvoices
             // 
@@ -433,24 +417,25 @@ namespace ShipScrn
             // lbInvoiceGroup
             // 
             this.lbInvoiceGroup.AutoSize = true;
-            this.lbInvoiceGroup.Location = new System.Drawing.Point(600, 12);
+            this.lbInvoiceGroup.Location = new System.Drawing.Point(56, 21);
             this.lbInvoiceGroup.Name = "lbInvoiceGroup";
-            this.lbInvoiceGroup.Size = new System.Drawing.Size(74, 13);
+            this.lbInvoiceGroup.Size = new System.Drawing.Size(77, 13);
             this.lbInvoiceGroup.TabIndex = 30;
-            this.lbInvoiceGroup.Text = "Invoice Group";
+            this.lbInvoiceGroup.Text = "Not Buy Group";
             // 
             // grpAction
             // 
+            this.grpAction.Controls.Add(this.btnRunTillDone);
+            this.grpAction.Controls.Add(this.btnRunTillChange);
             this.grpAction.Controls.Add(this.btnInvoice);
             this.grpAction.Controls.Add(this.btnTrackOnly);
             this.grpAction.Controls.Add(this.btnSkip);
-            this.grpAction.Controls.Add(this.llTrackShipment);
             this.grpAction.Location = new System.Drawing.Point(397, 40);
             this.grpAction.Name = "grpAction";
-            this.grpAction.Size = new System.Drawing.Size(138, 146);
+            this.grpAction.Size = new System.Drawing.Size(138, 170);
             this.grpAction.TabIndex = 31;
             this.grpAction.TabStop = false;
-            this.grpAction.Text = "Action";
+            this.grpAction.Text = "Actions";
             // 
             // groupBox1
             // 
@@ -488,7 +473,7 @@ namespace ShipScrn
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tbProcessedInvoices);
-            this.groupBox2.Location = new System.Drawing.Point(541, 175);
+            this.groupBox2.Location = new System.Drawing.Point(541, 215);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(303, 327);
             this.groupBox2.TabIndex = 33;
@@ -503,49 +488,12 @@ namespace ShipScrn
             this.gbStatistics.Controls.Add(this.tbNpacksProcessed);
             this.gbStatistics.Controls.Add(this.tbNtrackingNumFile);
             this.gbStatistics.Controls.Add(this.tbNpacksFile);
-            this.gbStatistics.Location = new System.Drawing.Point(541, 41);
+            this.gbStatistics.Location = new System.Drawing.Point(541, 100);
             this.gbStatistics.Name = "gbStatistics";
             this.gbStatistics.Size = new System.Drawing.Size(302, 110);
             this.gbStatistics.TabIndex = 34;
             this.gbStatistics.TabStop = false;
             this.gbStatistics.Text = "Statistics";
-            // 
-            // tbNpacksFile
-            // 
-            this.tbNpacksFile.Location = new System.Drawing.Point(65, 23);
-            this.tbNpacksFile.Name = "tbNpacksFile";
-            this.tbNpacksFile.Size = new System.Drawing.Size(66, 20);
-            this.tbNpacksFile.TabIndex = 0;
-            // 
-            // tbNtrackingNumFile
-            // 
-            this.tbNtrackingNumFile.Location = new System.Drawing.Point(65, 49);
-            this.tbNtrackingNumFile.Name = "tbNtrackingNumFile";
-            this.tbNtrackingNumFile.Size = new System.Drawing.Size(66, 20);
-            this.tbNtrackingNumFile.TabIndex = 1;
-            // 
-            // tbNpacksProcessed
-            // 
-            this.tbNpacksProcessed.Location = new System.Drawing.Point(153, 23);
-            this.tbNpacksProcessed.Name = "tbNpacksProcessed";
-            this.tbNpacksProcessed.Size = new System.Drawing.Size(66, 20);
-            this.tbNpacksProcessed.TabIndex = 2;
-            // 
-            // tbNtrackingNumProcessed
-            // 
-            this.tbNtrackingNumProcessed.Location = new System.Drawing.Point(153, 49);
-            this.tbNtrackingNumProcessed.Name = "tbNtrackingNumProcessed";
-            this.tbNtrackingNumProcessed.Size = new System.Drawing.Size(66, 20);
-            this.tbNtrackingNumProcessed.TabIndex = 3;
-            // 
-            // lbPacksStats
-            // 
-            this.lbPacksStats.AutoSize = true;
-            this.lbPacksStats.Location = new System.Drawing.Point(14, 31);
-            this.lbPacksStats.Name = "lbPacksStats";
-            this.lbPacksStats.Size = new System.Drawing.Size(37, 13);
-            this.lbPacksStats.TabIndex = 4;
-            this.lbPacksStats.Text = "Packs";
             // 
             // lbTracking
             // 
@@ -556,37 +504,120 @@ namespace ShipScrn
             this.lbTracking.TabIndex = 5;
             this.lbTracking.Text = "Tracking";
             // 
+            // lbPacksStats
+            // 
+            this.lbPacksStats.AutoSize = true;
+            this.lbPacksStats.Location = new System.Drawing.Point(14, 31);
+            this.lbPacksStats.Name = "lbPacksStats";
+            this.lbPacksStats.Size = new System.Drawing.Size(37, 13);
+            this.lbPacksStats.TabIndex = 4;
+            this.lbPacksStats.Text = "Packs";
+            // 
+            // tbNtrackingNumProcessed
+            // 
+            this.tbNtrackingNumProcessed.Location = new System.Drawing.Point(153, 49);
+            this.tbNtrackingNumProcessed.Name = "tbNtrackingNumProcessed";
+            this.tbNtrackingNumProcessed.Size = new System.Drawing.Size(66, 20);
+            this.tbNtrackingNumProcessed.TabIndex = 3;
+            // 
+            // tbNpacksProcessed
+            // 
+            this.tbNpacksProcessed.Location = new System.Drawing.Point(153, 23);
+            this.tbNpacksProcessed.Name = "tbNpacksProcessed";
+            this.tbNpacksProcessed.Size = new System.Drawing.Size(66, 20);
+            this.tbNpacksProcessed.TabIndex = 2;
+            // 
+            // tbNtrackingNumFile
+            // 
+            this.tbNtrackingNumFile.Location = new System.Drawing.Point(65, 49);
+            this.tbNtrackingNumFile.Name = "tbNtrackingNumFile";
+            this.tbNtrackingNumFile.Size = new System.Drawing.Size(66, 20);
+            this.tbNtrackingNumFile.TabIndex = 1;
+            // 
+            // tbNpacksFile
+            // 
+            this.tbNpacksFile.Location = new System.Drawing.Point(65, 23);
+            this.tbNpacksFile.Name = "tbNpacksFile";
+            this.tbNpacksFile.Size = new System.Drawing.Size(66, 20);
+            this.tbNpacksFile.TabIndex = 0;
+            // 
+            // tbBGBatch
+            // 
+            this.tbBGBatch.Location = new System.Drawing.Point(162, 50);
+            this.tbBGBatch.Name = "tbBGBatch";
+            this.tbBGBatch.Size = new System.Drawing.Size(100, 20);
+            this.tbBGBatch.TabIndex = 35;
+            // 
+            // lbBGBatch
+            // 
+            this.lbBGBatch.AutoSize = true;
+            this.lbBGBatch.Location = new System.Drawing.Point(57, 53);
+            this.lbBGBatch.Name = "lbBGBatch";
+            this.lbBGBatch.Size = new System.Drawing.Size(76, 13);
+            this.lbBGBatch.TabIndex = 36;
+            this.lbBGBatch.Text = "Buying Groups";
+            // 
+            // gbArBatches
+            // 
+            this.gbArBatches.Controls.Add(this.tbARBatch);
+            this.gbArBatches.Controls.Add(this.lbBGBatch);
+            this.gbArBatches.Controls.Add(this.tbBGBatch);
+            this.gbArBatches.Controls.Add(this.lbInvoiceGroup);
+            this.gbArBatches.Location = new System.Drawing.Point(541, 13);
+            this.gbArBatches.Name = "gbArBatches";
+            this.gbArBatches.Size = new System.Drawing.Size(302, 83);
+            this.gbArBatches.TabIndex = 37;
+            this.gbArBatches.TabStop = false;
+            this.gbArBatches.Text = "AR Batches";
+            // 
+            // btnRunTillChange
+            // 
+            this.btnRunTillChange.Location = new System.Drawing.Point(6, 106);
+            this.btnRunTillChange.Name = "btnRunTillChange";
+            this.btnRunTillChange.Size = new System.Drawing.Size(126, 23);
+            this.btnRunTillChange.TabIndex = 26;
+            this.btnRunTillChange.Text = "Run Till Change";
+            this.btnRunTillChange.UseVisualStyleBackColor = true;
+            // 
+            // btnRunTillDone
+            // 
+            this.btnRunTillDone.Location = new System.Drawing.Point(6, 135);
+            this.btnRunTillDone.Name = "btnRunTillDone";
+            this.btnRunTillDone.Size = new System.Drawing.Size(126, 23);
+            this.btnRunTillDone.TabIndex = 27;
+            this.btnRunTillDone.Text = "Run Till Done";
+            this.btnRunTillDone.UseVisualStyleBackColor = true;
+            // 
             // PackEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(859, 584);
+            this.Controls.Add(this.gbArBatches);
             this.Controls.Add(this.gbStatistics);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpAction);
-            this.Controls.Add(this.lbInvoiceGroup);
-            this.Controls.Add(this.btnARBatch);
-            this.Controls.Add(this.tbARBatch);
             this.Controls.Add(this.gbTrackingNos);
             this.Controls.Add(this.btnFedExFileOpen);
             this.Controls.Add(this.tbFedExFile);
             this.Controls.Add(this.gbShipAdr);
             this.Controls.Add(this.btnLogin);
             this.Name = "PackEntry";
-            this.Text = "PackEntry";
+            this.Text = "PackEntry IBill";
             this.gbShipAdr.ResumeLayout(false);
             this.gbShipAdr.PerformLayout();
             this.gbTrackingNos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracking)).EndInit();
             this.grpAction.ResumeLayout(false);
-            this.grpAction.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.gbStatistics.ResumeLayout(false);
             this.gbStatistics.PerformLayout();
+            this.gbArBatches.ResumeLayout(false);
+            this.gbArBatches.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -614,7 +645,6 @@ namespace ShipScrn
         private System.Windows.Forms.Button btnFedExFileOpen;
         private System.Windows.Forms.Button btnInvoice;
         private System.Windows.Forms.TextBox tbOrderNo;
-        private System.Windows.Forms.LinkLabel llTrackShipment;
         private System.Windows.Forms.Label lbOrderNo;
         private System.Windows.Forms.TextBox tbShipDate;
         private System.Windows.Forms.Label lbShipDate;
@@ -628,7 +658,6 @@ namespace ShipScrn
         private System.Windows.Forms.Button btnSkip;
         private System.Windows.Forms.GroupBox gbTrackingNos;
         private System.Windows.Forms.TextBox tbARBatch;
-        private System.Windows.Forms.Button btnARBatch;
         private System.Windows.Forms.TextBox tbProcessedInvoices;
         private System.Windows.Forms.Label lbInvoiceGroup;
         private System.Windows.Forms.GroupBox grpAction;
@@ -644,5 +673,10 @@ namespace ShipScrn
         private System.Windows.Forms.TextBox tbNtrackingNumFile;
         private System.Windows.Forms.Label lbTracking;
         private System.Windows.Forms.Label lbPacksStats;
+        private System.Windows.Forms.TextBox tbBGBatch;
+        private System.Windows.Forms.Label lbBGBatch;
+        private System.Windows.Forms.GroupBox gbArBatches;
+        private System.Windows.Forms.Button btnRunTillDone;
+        private System.Windows.Forms.Button btnRunTillChange;
     }
 }

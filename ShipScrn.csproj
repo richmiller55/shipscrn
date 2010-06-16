@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="AppStats.cs" />
     <Compile Include="ARInvoice.cs" />
+    <Compile Include="BuyGroup.cs" />
     <Compile Include="CustomerShip.cs" />
     <Compile Include="FedExWriteBackReader.cs" />
     <Compile Include="InvoiceGrp.cs" />

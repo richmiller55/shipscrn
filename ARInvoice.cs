@@ -12,7 +12,6 @@ namespace ShipScrn
         Hashtable PackInvoices;
         Hashtable InvoicePacks;
         string packSlip;
-        int invoiceNo;
         int lastInvoiceNo;
         string batchName;
         string newInvoices = string.Empty;
@@ -25,7 +24,6 @@ namespace ShipScrn
             InvoicePacks = new Hashtable();
 
             int packNo = Convert.ToInt32(pack);
-            this.batchName = "RLM85";
             this.packSlip = pack;
             string invoices = string.Empty;
             string errors = string.Empty;
@@ -61,7 +59,7 @@ namespace ShipScrn
         public int SetBatchStats()
         {
             Epicor.Mfg.BO.InvcHeadListDataSet InvList = new Epicor.Mfg.BO.InvcHeadListDataSet();
-            string query = "GroupID = 'RLM85' AND Posted = false BY InvoiceNum";
+            string query = "GroupID ='" + this.invGroup + "' AND Posted = false BY InvoiceNum";
             bool myout;
             InvList = arInvoice.GetList(query, 0, 0, out myout);
             this.PackInvoices.Clear();

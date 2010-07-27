@@ -50,6 +50,8 @@ namespace ShipScrn
                 Epicor.Mfg.BO.CustShipDataSet.ShipHeadRow custShipRow;
                 custShipRow = (Epicor.Mfg.BO.CustShipDataSet.ShipHeadRow)custShipDs.ShipHead.Rows[0];
                 CustNum = custShipRow.CustNum;
+                BuyGroup bgCheck = new BuyGroup(session, CustNum);
+                bool isBuyGroup = bgCheck.GetBuyGroupMember();
                 string trackingNum = custShipRow.TrackingNumber;
                 
                 if (trackingNum.Length > 0)

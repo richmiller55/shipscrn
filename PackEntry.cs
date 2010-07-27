@@ -205,8 +205,8 @@ namespace ShipScrn
         void setScreenVars(Shipment ship)
         {
             tbProcessedInvoices.Text = processedInvoices;
-            tbARBatch.Text = "NotBuyGp";
-            tbBGBatch.Text = "BuyGrp";
+            tbARBatch.Text = "NoBG";
+            tbBGBatch.Text = "BG";
             this.ship = ship;
             setFreightFileVars();
             setPackNumInfo();

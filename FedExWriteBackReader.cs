@@ -24,6 +24,7 @@ namespace ShipScrn
         public FedExWriteBackReader(string fullPath)
         {
             shipMgr = new ShipMgr();
+            // insert try catch block here
             tr = new StreamReader(fullPath);
             processFile();
         }

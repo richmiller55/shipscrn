@@ -21,7 +21,6 @@ namespace ShipScrn
             this.ds = this.custObj.GetByCustID(custId);
             this.DetermineIfBuyGroup();
         }
-
         private void DetermineIfBuyGroup()
         {
             int arrayLen = this.ds.CustBillTo.Rows.Count;

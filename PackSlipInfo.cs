@@ -18,6 +18,7 @@ namespace ShipScrn
         bool packFound;
         bool orderFound;
         bool packNeedsTracking;
+        bool isBuyGroup;
         string orderShipVia;
         string customerTerms;
         bool customerFF;
@@ -51,7 +52,7 @@ namespace ShipScrn
                 custShipRow = (Epicor.Mfg.BO.CustShipDataSet.ShipHeadRow)custShipDs.ShipHead.Rows[0];
                 CustNum = custShipRow.CustNum;
                 BuyGroup bgCheck = new BuyGroup(session, CustNum);
-                bool isBuyGroup = bgCheck.GetBuyGroupMember();
+                this.IsBuyGroup = bgCheck.GetBuyGroupMember();
                 string trackingNum = custShipRow.TrackingNumber;
                 
                 if (trackingNum.Length > 0)
@@ -252,6 +253,17 @@ namespace ShipScrn
             set
             {
                 packNum = value;
+            }
+        }
+        public bool IsBuyGroup
+        {
+            get
+            {
+                return isBuyGroup;
+            }
+            set
+            {
+                isBuyGroup = value;
             }
         }
     }

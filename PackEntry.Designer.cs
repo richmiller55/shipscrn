@@ -67,6 +67,8 @@ namespace ShipScrn
             this.tbProcessedInvoices = new System.Windows.Forms.TextBox();
             this.lbInvoiceGroup = new System.Windows.Forms.Label();
             this.grpAction = new System.Windows.Forms.GroupBox();
+            this.btnRunTillDone = new System.Windows.Forms.Button();
+            this.btnRunTillChange = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblInvoiceStatus = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -80,8 +82,6 @@ namespace ShipScrn
             this.tbBGBatch = new System.Windows.Forms.TextBox();
             this.lbBGBatch = new System.Windows.Forms.Label();
             this.gbArBatches = new System.Windows.Forms.GroupBox();
-            this.btnRunTillChange = new System.Windows.Forms.Button();
-            this.btnRunTillDone = new System.Windows.Forms.Button();
             this.gbShipAdr.SuspendLayout();
             this.gbTrackingNos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracking)).BeginInit();
@@ -437,6 +437,24 @@ namespace ShipScrn
             this.grpAction.TabStop = false;
             this.grpAction.Text = "Actions";
             // 
+            // btnRunTillDone
+            // 
+            this.btnRunTillDone.Location = new System.Drawing.Point(6, 135);
+            this.btnRunTillDone.Name = "btnRunTillDone";
+            this.btnRunTillDone.Size = new System.Drawing.Size(126, 23);
+            this.btnRunTillDone.TabIndex = 27;
+            this.btnRunTillDone.Text = "Run Till Done";
+            this.btnRunTillDone.UseVisualStyleBackColor = true;
+            // 
+            // btnRunTillChange
+            // 
+            this.btnRunTillChange.Location = new System.Drawing.Point(6, 106);
+            this.btnRunTillChange.Name = "btnRunTillChange";
+            this.btnRunTillChange.Size = new System.Drawing.Size(126, 23);
+            this.btnRunTillChange.TabIndex = 26;
+            this.btnRunTillChange.Text = "Run Till Change";
+            this.btnRunTillChange.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lblInvoiceStatus);
@@ -569,24 +587,6 @@ namespace ShipScrn
             this.gbArBatches.TabIndex = 37;
             this.gbArBatches.TabStop = false;
             this.gbArBatches.Text = "AR Batches";
-            // 
-            // btnRunTillChange
-            // 
-            this.btnRunTillChange.Location = new System.Drawing.Point(6, 106);
-            this.btnRunTillChange.Name = "btnRunTillChange";
-            this.btnRunTillChange.Size = new System.Drawing.Size(126, 23);
-            this.btnRunTillChange.TabIndex = 26;
-            this.btnRunTillChange.Text = "Run Till Change";
-            this.btnRunTillChange.UseVisualStyleBackColor = true;
-            // 
-            // btnRunTillDone
-            // 
-            this.btnRunTillDone.Location = new System.Drawing.Point(6, 135);
-            this.btnRunTillDone.Name = "btnRunTillDone";
-            this.btnRunTillDone.Size = new System.Drawing.Size(126, 23);
-            this.btnRunTillDone.TabIndex = 27;
-            this.btnRunTillDone.Text = "Run Till Done";
-            this.btnRunTillDone.UseVisualStyleBackColor = true;
             // 
             // PackEntry
             // 

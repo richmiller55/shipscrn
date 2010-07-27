@@ -24,7 +24,7 @@ namespace ShipScrn
         AppStats stats;
         string filename;
         string crlf;
-        
+        string arBatch;
         bool moreRecords;
         string processedInvoices;
         decimal handlingCharge = 2.50M;
@@ -127,7 +127,7 @@ namespace ShipScrn
         void btnTrackOnly_Click(object sender, EventArgs e)
         {
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-            ARInvoice arInvoice = new ARInvoice(session, tbARBatch.Text, tbPackNo.Text);
+            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
             string trackingNo = ship.GetTrackingNumbers();
             arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
             int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
@@ -138,7 +138,7 @@ namespace ShipScrn
         void btnInvoice_Click(object sender, EventArgs e)
         {
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-            ARInvoice arInvoice = new ARInvoice(session, tbARBatch.Text, tbPackNo.Text);
+            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
             decimal amount = ship.GetTotalCharge() + this.handlingCharge;
             string trackingNo = ship.GetTrackingNumbers();
             arInvoice.GetNewInvcMisc(amount, trackingNo);
@@ -154,11 +154,24 @@ namespace ShipScrn
             decimal weight = ship.GetTotalWeight();
             info.PostTrackingToPack(trackingNo,weight,ship);
         }
+        void setARBatchIfBuyGrp(PackSlipInfo info)
+        {
+            if (info.IsBuyGroup)
+            {
+                this.ARBatchName = this.tbBGBatch.Text;
+            }
+            else
+            {
+                this.ARBatchName = this.tbARBatch.Text;
+            }
+        }
         void setPackNumInfo()
         {
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
             int packNum = ship.GetPackSlipNo();
             PackSlipInfo info = new PackSlipInfo(session, packNum);
+            this.setARBatchIfBuyGrp(info);
+
             this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.btnTrackOnly.BackColor = System.Drawing.SystemColors.ButtonFace;
             // if (info.NeedsTracking)
@@ -192,7 +205,8 @@ namespace ShipScrn
         void setScreenVars(Shipment ship)
         {
             tbProcessedInvoices.Text = processedInvoices;
-            tbARBatch.Text = "RLM85";
+            tbARBatch.Text = "NotBuyGp";
+            tbBGBatch.Text = "BuyGrp";
             this.ship = ship;
             setFreightFileVars();
             setPackNumInfo();
@@ -298,10 +312,23 @@ namespace ShipScrn
                 // enable the file open controls
                 // string result = "testOk";
             }
-         }
+        }
+
         public void SetVanAccess(VanAccess va)
         {
             vanAccess = va;
         }
+        public string ARBatchName
+        {
+            get
+            {
+                return arBatch;
+            }
+            set
+            {
+                arBatch = value;
+            }
+        }
+
     }
 }

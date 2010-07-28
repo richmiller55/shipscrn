@@ -24,7 +24,9 @@ namespace ShipScrn
         AppStats stats;
         string filename;
         string crlf;
-        string arBatch;
+        string arBatchName;
+        string arNoBg;
+        string arBg;
         bool moreRecords;
         string processedInvoices;
         decimal handlingCharge = 2.50M;
@@ -32,6 +34,7 @@ namespace ShipScrn
         {
             InitializeComponent();
             crlf = "\r\n";
+            this.initArBatchNames();
             filename = string.Empty;
             InvoicePacks = new Hashtable();
             this.stats = new AppStats();
@@ -46,7 +49,11 @@ namespace ShipScrn
             btnRunTillChange.Click += new EventHandler(btnRunTillChange_Click);
             btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
         }
-
+        void initArBatchNames()
+        {
+            this.ARBg = "BG";
+            this.ARNoBg = "NoBG";
+        }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
             throw new Exception("The method or operation is not implemented.");
@@ -112,6 +119,7 @@ namespace ShipScrn
         }
         void btnSkip_Click(object sender, EventArgs e)
         {
+            this.saveArBatchTextBoxValues();
             nextRecord(); 
         }
         void nextRecord()
@@ -126,6 +134,7 @@ namespace ShipScrn
         }
         void btnTrackOnly_Click(object sender, EventArgs e)
         {
+            this.saveArBatchTextBoxValues();
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
             ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
             string trackingNo = ship.GetTrackingNumbers();
@@ -137,6 +146,7 @@ namespace ShipScrn
         }
         void btnInvoice_Click(object sender, EventArgs e)
         {
+            this.saveArBatchTextBoxValues();
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
             ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
             decimal amount = ship.GetTotalCharge() + this.handlingCharge;
@@ -154,15 +164,20 @@ namespace ShipScrn
             decimal weight = ship.GetTotalWeight();
             info.PostTrackingToPack(trackingNo,weight,ship);
         }
+        void saveArBatchTextBoxValues()
+        {
+            this.ARBg = this.tbBGBatch.Text;
+            this.ARNoBg = this.tbARBatch.Text;
+        }
         void setARBatchIfBuyGrp(PackSlipInfo info)
         {
             if (info.IsBuyGroup)
             {
-                this.ARBatchName = this.tbBGBatch.Text;
+                this.ARBatchName = this.ARBg;
             }
             else
             {
-                this.ARBatchName = this.tbARBatch.Text;
+                this.ARBatchName = this.ARNoBg;
             }
         }
         void setPackNumInfo()
@@ -205,8 +220,8 @@ namespace ShipScrn
         void setScreenVars(Shipment ship)
         {
             tbProcessedInvoices.Text = processedInvoices;
-            tbARBatch.Text = "NoBG";
-            tbBGBatch.Text = "BG";
+            tbARBatch.Text = this.ARNoBg;
+            tbBGBatch.Text = this.ARBg;
             this.ship = ship;
             setFreightFileVars();
             setPackNumInfo();
@@ -322,13 +337,36 @@ namespace ShipScrn
         {
             get
             {
-                return arBatch;
+                return arBatchName;
             }
             set
             {
-                arBatch = value;
+                arBatchName = value;
             }
         }
+        public string ARBg
+        {
+            get
+            {
+                return arBg;
+            }
+            set
+            {
+                arBg = value;
+            }
+        }
+        public string ARNoBg
+        {
+            get
+            {
+                return arNoBg;
+            }
+            set
+            {
+                arNoBg = value;
+            }
+        }
+
 
     }
 }

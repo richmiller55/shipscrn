@@ -149,9 +149,13 @@ namespace ShipScrn
             this.saveArBatchTextBoxValues();
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
             ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
-            decimal amount = ship.GetTotalCharge() + this.handlingCharge;
             string trackingNo = ship.GetTrackingNumbers();
-            arInvoice.GetNewInvcMisc(amount, trackingNo);
+            
+            if (ship.GetTotalCharge().CompareTo(0.0M) > 0)
+            {
+                decimal amount = ship.GetTotalCharge() + this.handlingCharge;
+                arInvoice.GetNewInvcMisc(amount, trackingNo);
+            }
             arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
             int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
             processedInvoices += "Invoiced Now " + InvoiceNo.ToString();

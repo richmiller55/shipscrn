@@ -18,9 +18,12 @@ namespace ShipScrn
     public class TrackingReader
     {
         public SqlDataReader reader;
+        private ShipMgr shipMgr;
         public TrackingReader()
         {
             reader = SetDataReader();
+            shipMgr = new ShipMgr();
+            LoadShipMgr();
         }
         public SqlDataReader GetReader()
         {
@@ -38,7 +41,7 @@ namespace ShipScrn
 		    pack_num as packSlip,
                     tracking_no as trackingNo,
                     service as serviceClass,
-                    ifnull(order_num,0) as orderNo,
+                    isnull(order_num,0) as orderNo,
                     ship_date as shipDate,
                     weight as weight,
                     cost as charge
@@ -48,6 +51,8 @@ namespace ShipScrn
             SqlDataReader myReader = myCommand.ExecuteReader();
             return myReader;
         }
+        public ShipMgr GetShipMgr() { return shipMgr; }
+
         private string GetTodaysDateStr()
         {
             string year = DateTime.Now.Year.ToString();
@@ -73,7 +78,7 @@ namespace ShipScrn
             SqlDataReader reader = GetReader();
             if (reader.HasRows)
             {
-                ShipMgr shipMgr = new ShipMgr();
+                
                 bool thingsToRead = reader.Read();
                 while (thingsToRead)
                 {

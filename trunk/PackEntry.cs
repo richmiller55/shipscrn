@@ -48,6 +48,7 @@ namespace ShipScrn
             btnSkip.Click += new EventHandler(btnSkip_Click);
             btnRunTillChange.Click += new EventHandler(btnRunTillChange_Click);
             btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
+            btnRunTrackTable.Click += new EventHandler(btnRunTrackTable_Click);
         }
         void initArBatchNames()
         {
@@ -253,6 +254,26 @@ namespace ShipScrn
             this.tbNpacksProcessed.Text = this.stats.NPacksProcessed.ToString();
             this.tbNtrackingNumProcessed.Text = this.stats.NTrackingProcessed.ToString();
         }
+        void btnRunTrackTable_Click(object sender, EventArgs e)
+        {
+            processTracking();
+        }
+        void processTracking()
+        {
+            TrackingReader reader = new TrackingReader();
+            ShipMgr trackData = reader.GetShipMgr();
+            trackData.TotalShipments();
+            stats.TotalFreightFile = trackData.TotalFreight;
+            stats.TotalWeightFile = trackData.TotalWeight;
+            stats.NPacksFile = trackData.Packs;
+            stats.NTrackingNumbersFile = trackData.TrackingNumbers;
+
+            shipments = trackData.GetShipmentsHash();
+            ShipKeys = shipments.Keys;
+            iter = shipments.GetEnumerator();
+            moreRecords = iter.MoveNext();
+            setScreenVars((Shipment)iter.Value);
+        }
 
         void processFedExFile()
         {
@@ -284,6 +305,7 @@ namespace ShipScrn
             }
             processFedExFile();
         }
+        // void btnRunTrackTable
         void tbPackNo_LostFocus(object sender, EventArgs e)
         {
             

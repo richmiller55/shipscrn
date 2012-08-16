@@ -82,6 +82,7 @@ namespace ShipScrn
             this.tbBGBatch = new System.Windows.Forms.TextBox();
             this.lbBGBatch = new System.Windows.Forms.Label();
             this.gbArBatches = new System.Windows.Forms.GroupBox();
+            this.btnRunTrackTable = new System.Windows.Forms.Button();
             this.gbShipAdr.SuspendLayout();
             this.gbTrackingNos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracking)).BeginInit();
@@ -271,7 +272,7 @@ namespace ShipScrn
             // 
             this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.btnInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnInvoice.Location = new System.Drawing.Point(6, 22);
+            this.btnInvoice.Location = new System.Drawing.Point(6, 55);
             this.btnInvoice.Name = "btnInvoice";
             this.btnInvoice.Size = new System.Drawing.Size(126, 22);
             this.btnInvoice.TabIndex = 10;
@@ -360,7 +361,7 @@ namespace ShipScrn
             // 
             // btnTrackOnly
             // 
-            this.btnTrackOnly.Location = new System.Drawing.Point(6, 50);
+            this.btnTrackOnly.Location = new System.Drawing.Point(6, 83);
             this.btnTrackOnly.Name = "btnTrackOnly";
             this.btnTrackOnly.Size = new System.Drawing.Size(126, 22);
             this.btnTrackOnly.TabIndex = 24;
@@ -369,7 +370,7 @@ namespace ShipScrn
             // 
             // btnSkip
             // 
-            this.btnSkip.Location = new System.Drawing.Point(6, 78);
+            this.btnSkip.Location = new System.Drawing.Point(6, 111);
             this.btnSkip.Name = "btnSkip";
             this.btnSkip.Size = new System.Drawing.Size(126, 22);
             this.btnSkip.TabIndex = 25;
@@ -425,6 +426,7 @@ namespace ShipScrn
             // 
             // grpAction
             // 
+            this.grpAction.Controls.Add(this.btnRunTrackTable);
             this.grpAction.Controls.Add(this.btnRunTillDone);
             this.grpAction.Controls.Add(this.btnRunTillChange);
             this.grpAction.Controls.Add(this.btnInvoice);
@@ -432,14 +434,14 @@ namespace ShipScrn
             this.grpAction.Controls.Add(this.btnSkip);
             this.grpAction.Location = new System.Drawing.Point(397, 40);
             this.grpAction.Name = "grpAction";
-            this.grpAction.Size = new System.Drawing.Size(138, 170);
+            this.grpAction.Size = new System.Drawing.Size(138, 198);
             this.grpAction.TabIndex = 31;
             this.grpAction.TabStop = false;
             this.grpAction.Text = "Actions";
             // 
             // btnRunTillDone
             // 
-            this.btnRunTillDone.Location = new System.Drawing.Point(6, 135);
+            this.btnRunTillDone.Location = new System.Drawing.Point(6, 168);
             this.btnRunTillDone.Name = "btnRunTillDone";
             this.btnRunTillDone.Size = new System.Drawing.Size(126, 23);
             this.btnRunTillDone.TabIndex = 27;
@@ -448,7 +450,7 @@ namespace ShipScrn
             // 
             // btnRunTillChange
             // 
-            this.btnRunTillChange.Location = new System.Drawing.Point(6, 106);
+            this.btnRunTillChange.Location = new System.Drawing.Point(6, 139);
             this.btnRunTillChange.Name = "btnRunTillChange";
             this.btnRunTillChange.Size = new System.Drawing.Size(126, 23);
             this.btnRunTillChange.TabIndex = 26;
@@ -588,6 +590,15 @@ namespace ShipScrn
             this.gbArBatches.TabStop = false;
             this.gbArBatches.Text = "AR Batches";
             // 
+            // btnRunTrackTable
+            // 
+            this.btnRunTrackTable.Location = new System.Drawing.Point(6, 25);
+            this.btnRunTrackTable.Name = "btnRunTrackTable";
+            this.btnRunTrackTable.Size = new System.Drawing.Size(126, 23);
+            this.btnRunTrackTable.TabIndex = 28;
+            this.btnRunTrackTable.Text = "Run Tracking";
+            this.btnRunTrackTable.UseVisualStyleBackColor = true;
+            // 
             // PackEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -678,5 +689,6 @@ namespace ShipScrn
         private System.Windows.Forms.GroupBox gbArBatches;
         private System.Windows.Forms.Button btnRunTillDone;
         private System.Windows.Forms.Button btnRunTillChange;
+        private System.Windows.Forms.Button btnRunTrackTable;
     }
 }

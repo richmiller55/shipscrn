@@ -34,7 +34,6 @@ namespace ShipScrn
             SqlConnection connection = new SqlConnection("Data Source=app1; Integrated Security=SSPI;" +
                                                         "Initial Catalog=tracking");
 
-
             connection.Open();
             string sql = @"
                 select 
@@ -46,7 +45,7 @@ namespace ShipScrn
                     weight as weight,
                     cost as charge
                 from tracking.dbo.tracking_raw_data
-                where ship_date = " + GetTodaysDateStr();
+                where ship_date = " +"'" + GetTodaysDateStr() + "'";
             SqlCommand myCommand = new SqlCommand(sql, connection);
             SqlDataReader myReader = myCommand.ExecuteReader();
             return myReader;

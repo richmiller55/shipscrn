@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="Shipment.cs" />
     <Compile Include="ShipMgr.cs" />
+    <Compile Include="TrackingReader.cs" />
     <Compile Include="VanAccess.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

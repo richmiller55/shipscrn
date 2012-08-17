@@ -13,7 +13,8 @@ namespace ShipScrn
         orderNo,
         shipDate,
         weight,
-        charge
+        charge,
+        deleted
     }
     public class TrackingReader
     {
@@ -38,14 +39,17 @@ namespace ShipScrn
             string sql = @"
                 select 
 		    pack_num as packSlip,
-                    tracking_no as trackingNo,
+                    isnull(tracking_no,'NoTracking') as trackingNo,
                     service as serviceClass,
                     isnull(order_num,0) as orderNo,
                     ship_date as shipDate,
                     weight as weight,
-                    cost as charge
+                    cost as charge,
+                    deleted as deleted
                 from tracking.dbo.tracking_raw_data
-                where ship_date = " +"'" + GetTodaysDateStr() + "'";
+                where ship_date = " + "'" + GetTodaysDateStr() + "'" +
+                @" and pack_num is not null 
+                and service in ('USPS1ST','USPSPRI')";           
             SqlCommand myCommand = new SqlCommand(sql, connection);
             SqlDataReader myReader = myCommand.ExecuteReader();
             return myReader;
@@ -77,7 +81,6 @@ namespace ShipScrn
             SqlDataReader reader = GetReader();
             if (reader.HasRows)
             {
-                
                 bool thingsToRead = reader.Read();
                 while (thingsToRead)
                 {
@@ -91,9 +94,17 @@ namespace ShipScrn
                     int orderNo = System.Convert.ToInt32(orderNo_s);
                     decimal weight = reader.GetDecimal((int)trackDb.weight);
                     decimal charge = reader.GetDecimal((int)trackDb.charge);
-                    shipMgr.AddShipmentLine(packSlip, trackingNo, shipDate,
-                                        serviceClass, orderNo, weight, charge);
-
+                    string deleted = reader.GetString((int)trackDb.deleted);
+                    if (deleted.Equals("Y"))
+                    {
+                        shipMgr.RemoveShipmentLine(packSlip, trackingNo);
+                    }
+                    else
+                    {
+                        shipMgr.AddShipmentLine(packSlip, trackingNo, shipDate,
+                                    serviceClass, orderNo, weight, charge);
+                    }
+                    thingsToRead = reader.Read();
                 }
             }
         }

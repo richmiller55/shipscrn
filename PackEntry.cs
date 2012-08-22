@@ -52,8 +52,8 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg = "BG";
-            this.ARNoBg = "NoBG";
+            this.ARBg = "U0821122";
+            this.ARNoBg = "U0821121";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -62,7 +62,25 @@ namespace ShipScrn
 
         void btnRunTillChange_Click(object sender, EventArgs e)
         {
-            throw new Exception("The method or operation is not implemented.");
+            int invCount = 0;
+            moreRecords = iter.MoveNext();
+            while (moreRecords)
+            {
+                if (invCount > 50) this.ARNoBg = "U0821122";
+                invCount++;
+                this.ship = (Shipment)iter.Value;
+                setScreenVars((Shipment)iter.Value);
+                this.Refresh();
+                this.saveArBatchTextBoxValues();
+                Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
+                ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
+                string trackingNo = ship.GetTrackingNumbers();
+                arInvoice.AddTrackingToInvcHead(tbPackNo.Text, trackingNo);
+                int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
+                processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
+                processedInvoices += " Pack " + tbPackNo.Text + crlf;
+                iter.MoveNext();
+            }
         }
         void setTrackingGrid()
         {
@@ -141,7 +159,7 @@ namespace ShipScrn
             string trackingNo = ship.GetTrackingNumbers();
             arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
             int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
-            processedInvoices += "Invoiced Prior " + InvoiceNo.ToString();
+            processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
             processedInvoices += " Pack " + tbPackNo.Text + crlf;
             nextRecord();
         }
@@ -231,7 +249,7 @@ namespace ShipScrn
             setFreightFileVars();
             setPackNumInfo();
             setTrackingGrid();
-            setScreenShipTo();
+            // setScreenShipTo();
             displayStats();
         }
         void setFreightFileVars()
@@ -354,7 +372,6 @@ namespace ShipScrn
                 // string result = "testOk";
             }
         }
-
         public void SetVanAccess(VanAccess va)
         {
             vanAccess = va;
@@ -392,7 +409,5 @@ namespace ShipScrn
                 arNoBg = value;
             }
         }
-
-
     }
 }

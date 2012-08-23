@@ -52,8 +52,8 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg = "U0821122";
-            this.ARNoBg = "U0821121";
+            this.ARBg = "U0822122";
+            this.ARNoBg = "U0822121";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -66,9 +66,16 @@ namespace ShipScrn
             moreRecords = iter.MoveNext();
             while (moreRecords)
             {
-                if (invCount > 50) this.ARNoBg = "U0821122";
+                if (invCount > 50) this.ARNoBg = this.ARBg;
                 invCount++;
-                this.ship = (Shipment)iter.Value;
+                try
+                {
+                    this.ship = (Shipment)iter.Value;
+                }
+                catch (Exception e2)
+                {
+                    string message = e2.Message;
+                }
                 setScreenVars((Shipment)iter.Value);
                 this.Refresh();
                 this.saveArBatchTextBoxValues();

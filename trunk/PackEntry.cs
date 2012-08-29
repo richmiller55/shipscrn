@@ -27,6 +27,8 @@ namespace ShipScrn
         string arBatchName;
         string arNoBg;
         string arBg;
+        string Batch3;
+        string Batch4;
         bool moreRecords;
         string processedInvoices;
         decimal handlingCharge = 2.50M;
@@ -52,8 +54,10 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg = "U0822122";
-            this.ARNoBg = "U0822121";
+            this.ARBg = "U0828122";
+            this.ARNoBg = "U0828121";
+            this.Batch3 = "U0828123";
+            this.Batch4 = "U0828124";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -67,6 +71,8 @@ namespace ShipScrn
             while (moreRecords)
             {
                 if (invCount > 50) this.ARNoBg = this.ARBg;
+                if (invCount > 100) this.ARNoBg = this.Batch3;
+                if (invCount > 150) this.ARNoBg = this.Batch4;
                 invCount++;
                 try
                 {

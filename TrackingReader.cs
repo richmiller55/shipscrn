@@ -49,10 +49,9 @@ namespace ShipScrn
                 from tracking.dbo.tracking_raw_data
                 where ship_date = " + "'" + GetTodaysDateStr() + "'" +
                 @" and pack_num is not null 
-                and service in ('ground','standard')";
-                // and service in ('USPS1ST','USPSPRI')";           
-                
-            
+               and service in ('ground','standard')";
+            // and service in ('USPS1ST','USPSPRI')";                                       
+
             SqlCommand myCommand = new SqlCommand(sql, connection);
             SqlDataReader myReader = myCommand.ExecuteReader();
             return myReader;

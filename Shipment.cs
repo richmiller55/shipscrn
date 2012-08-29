@@ -37,8 +37,10 @@ namespace ShipScrn
 	        shipDate = shipDte;
             this.classOfService = classOfService;
             this.orderNo = orderNo;
-            weights.Add(trackNo,weight);
-	        charges.Add(trackNo,charge);
+            if (!weights.ContainsKey(trackNo)) {
+                weights.Add(trackNo,weight);
+	            charges.Add(trackNo,charge);
+            };
 	    }
 	    public void RemoveLine(string trackNo)
 	    {

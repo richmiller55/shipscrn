@@ -49,12 +49,8 @@ namespace ShipScrn
         {
             return reader;
         }
-        public SqlDataReader SetDataReader()
+        private string GetUPS_Sql()
         {
-            SqlConnection connection = new SqlConnection("Data Source=app1; Integrated Security=SSPI;" +
-                                                        "Initial Catalog=tracking");
-
-            connection.Open();
             string sql = @"
                 select 
 		    pack_num as packSlip,
@@ -69,10 +65,35 @@ namespace ShipScrn
                 where ship_date = " + "'" + GetTodaysDateStr() + "'" +
                 @" and pack_num is not null 
                 and trk_upd_flag = 0
-                and service in ('ground','standard')";                
-                // and service in ('USPS1ST','USPSPRI')";                                       
-                
+                and service in ('ground','standard')";
+            return sql;
+        }
+        private string GetUSPS_Sql()
+        {
+            string sql = @"
+                select 
+		    pack_num as packSlip,
+                    isnull(tracking_no,'NoTracking') as trackingNo,
+                    service as serviceClass,
+                    isnull(order_num,0) as orderNo,
+                    ship_date as shipDate,
+                    weight as weight,
+                    cost as charge,
+                    deleted as deleted
+                from tracking.dbo.tracking_raw_data
+                where ship_date = " + "'" + GetTodaysDateStr() + "'" +
+                @" and pack_num is not null 
+                and trk_upd_flag = 0
+                and service in ('USPS1ST','USPSPRI')";                                       
+            return sql;
+        }
+        public SqlDataReader SetDataReader()
+        {
+            SqlConnection connection = new SqlConnection("Data Source=app1; Integrated Security=SSPI;" +
+                                                        "Initial Catalog=tracking");
 
+            connection.Open();
+            string sql = GetUPS_Sql();
 
             SqlCommand myCommand = new SqlCommand(sql, connection);
             SqlDataReader myReader = myCommand.ExecuteReader();

@@ -54,10 +54,10 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg = "U0829122";
-            this.ARNoBg = "U0829121";
-            this.Batch3 = "U0829123";
-            this.Batch4 = "U0829124";
+            this.ARBg = "U0830122";
+            this.ARNoBg = "U0830121";
+            this.Batch3 = "U0830123";
+            this.Batch4 = "U0830124";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -89,10 +89,10 @@ namespace ShipScrn
                 int PackSlipNo = this.ship.GetPackSlipNo();
                 ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
                 string trackingNo = ship.GetTrackingNumbers();
-                arInvoice.AddTrackingToInvcHead(tbPackNo.Text, trackingNo);
-                int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
+                arInvoice.AddTrackingToInvcHead(PackSlipNo.ToString(), trackingNo);
+                int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
                 processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
-                processedInvoices += " Pack " + tbPackNo.Text + crlf;
+                processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
                 WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
                 iter.MoveNext();
             }
@@ -174,9 +174,9 @@ namespace ShipScrn
             ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
             string trackingNo = ship.GetTrackingNumbers();
             arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
-            int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
+            int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
             processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
-            processedInvoices += " Pack " + tbPackNo.Text + crlf;
+            processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
             WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
             nextRecord();
         }
@@ -184,7 +184,8 @@ namespace ShipScrn
         {
             this.saveArBatchTextBoxValues();
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
+            int PackSlipNo = this.ship.GetPackSlipNo();
+            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
             string trackingNo = ship.GetTrackingNumbers();
             
             if (ship.GetTotalCharge().CompareTo(0.0M) > 0)
@@ -193,9 +194,10 @@ namespace ShipScrn
                 arInvoice.GetNewInvcMisc(amount, trackingNo);
             }
             arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
-            int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
+            int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
             processedInvoices += "Invoiced Now " + InvoiceNo.ToString();
-            processedInvoices += " Pack " + tbPackNo.Text + crlf;
+            processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
+            WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
             nextRecord();
         }
         void WriteTrackingToPack(PackSlipInfo info)

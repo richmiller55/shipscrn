@@ -5,6 +5,23 @@ using System.Data.SqlClient;
 
 namespace ShipScrn
 {
+    public class WriteBackTracking
+    {
+        public WriteBackTracking(int packNum)
+        {
+            SqlConnection connection = new SqlConnection("Data Source=app1; Integrated Security=SSPI;" +
+                                                         "Initial Catalog=tracking");
+            connection.Open();
+            string sql = @"
+              update   
+                 tracking.dbo.tracking_raw_data
+                set frt_upd_flag = 1,
+                    trk_upd_flag = 1
+                where pack_num = '" + packNum.ToString() + "\'";
+            SqlCommand myCommand = new SqlCommand(sql, connection);
+            myCommand.ExecuteNonQuery();
+        }
+    }
     public enum trackDb
     {
         packSlip,
@@ -16,6 +33,8 @@ namespace ShipScrn
         charge,
         deleted
     }
+
+    
     public class TrackingReader
     {
         public SqlDataReader reader;
@@ -49,8 +68,11 @@ namespace ShipScrn
                 from tracking.dbo.tracking_raw_data
                 where ship_date = " + "'" + GetTodaysDateStr() + "'" +
                 @" and pack_num is not null 
-               and service in ('ground','standard')";
-            // and service in ('USPS1ST','USPSPRI')";                                       
+                and trk_upd_flag = 0
+                and service in ('ground','standard')";                
+                // and service in ('USPS1ST','USPSPRI')";                                       
+                
+
 
             SqlCommand myCommand = new SqlCommand(sql, connection);
             SqlDataReader myReader = myCommand.ExecuteReader();

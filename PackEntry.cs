@@ -54,10 +54,10 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg = "U0828122";
-            this.ARNoBg = "U0828121";
-            this.Batch3 = "U0828123";
-            this.Batch4 = "U0828124";
+            this.ARBg = "U0829122";
+            this.ARNoBg = "U0829121";
+            this.Batch3 = "U0829123";
+            this.Batch4 = "U0829124";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -86,12 +86,14 @@ namespace ShipScrn
                 this.Refresh();
                 this.saveArBatchTextBoxValues();
                 Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-                ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
+                int PackSlipNo = this.ship.GetPackSlipNo();
+                ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
                 string trackingNo = ship.GetTrackingNumbers();
                 arInvoice.AddTrackingToInvcHead(tbPackNo.Text, trackingNo);
                 int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
                 processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
                 processedInvoices += " Pack " + tbPackNo.Text + crlf;
+                WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
                 iter.MoveNext();
             }
         }
@@ -168,12 +170,14 @@ namespace ShipScrn
         {
             this.saveArBatchTextBoxValues();
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, tbPackNo.Text);
+            int PackSlipNo = this.ship.GetPackSlipNo();
+            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
             string trackingNo = ship.GetTrackingNumbers();
             arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
             int InvoiceNo = arInvoice.GetInvoiceFromPack(tbPackNo.Text);
             processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
             processedInvoices += " Pack " + tbPackNo.Text + crlf;
+            WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
             nextRecord();
         }
         void btnInvoice_Click(object sender, EventArgs e)

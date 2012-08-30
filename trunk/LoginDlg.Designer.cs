@@ -87,7 +87,7 @@ namespace ShipScrn
             this.cbVanDatabase.Name = "cbVanDatabase";
             this.cbVanDatabase.Size = new System.Drawing.Size(121, 21);
             this.cbVanDatabase.TabIndex = 4;
-            this.cbVanDatabase.Text = "test";
+            this.cbVanDatabase.Text = "system";
             // 
             // label3
             // 

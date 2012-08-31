@@ -54,10 +54,10 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg = "U0830122";
-            this.ARNoBg = "U0830121";
-            this.Batch3 = "U0830123";
-            this.Batch4 = "U0830124";
+            this.ARBg = "P0831122";
+            this.ARNoBg = "P0831121";
+            this.Batch3 = "U0831123";
+            this.Batch4 = "U0831124";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {

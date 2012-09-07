@@ -54,10 +54,10 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg = "P0831122";
-            this.ARNoBg = "P0831121";
-            this.Batch3 = "U0831123";
-            this.Batch4 = "U0831124";
+            this.ARBg   = "U0906124";
+            this.ARNoBg = "U0906123";
+            this.Batch3 = "U0906123";
+            this.Batch4 = "U0906124";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -70,7 +70,7 @@ namespace ShipScrn
             moreRecords = iter.MoveNext();
             while (moreRecords)
             {
-                if (invCount > 50) this.ARNoBg = this.ARBg;
+                if (invCount > 20) this.ARNoBg = this.ARBg;
                 if (invCount > 100) this.ARNoBg = this.Batch3;
                 if (invCount > 150) this.ARNoBg = this.Batch4;
                 invCount++;

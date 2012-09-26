@@ -72,29 +72,29 @@ namespace ShipScrn
         {
             string sql = @"
                 select 
-		    pack_num as packSlip,
+		            pack_num as packSlip,
                     isnull(tracking_no,'NoTracking') as trackingNo,
                     service as serviceClass,
                     isnull(order_num,0) as orderNo,
                     ship_date as shipDate,
-                    weight as weight,
-                    cost as charge,
-                    deleted as deleted
+                    isnull(weight,0) as weight,
+                    isnull(cost,0) as charge,
+                    isnull(deleted,'N') as deleted
                 from tracking.dbo.tracking_raw_data
                 where ship_date = " + "'" + GetTodaysDateStr() + "'" +
                 @" and pack_num is not null 
                 and trk_upd_flag = 0
-                and service in ('USPS1ST','USPSPRI')";                                       
+                and service in ('USPS1ST','USPSPRI','FGRB')
+                and pack_num != 999999";                                       
             return sql;
         }
         public SqlDataReader SetDataReader()
         {
             SqlConnection connection = new SqlConnection("Data Source=app1; Integrated Security=SSPI;" +
                                                         "Initial Catalog=tracking");
-
             connection.Open();
             string sql;
-            bool runUPS = true;
+            bool runUPS = false;
             if (runUPS) sql = GetUPS_Sql();
             else sql = GetUSPS_Sql(); 
 
@@ -133,12 +133,15 @@ namespace ShipScrn
                 while (thingsToRead)
                 {
                     decimal packSlip_d = reader.GetDecimal((int)trackDb.packSlip);
+                    if (packSlip_d.Equals(999999)) continue;
+
                     int packSlip = System.Convert.ToInt32(packSlip_d);
                     string trackingNo = reader.GetString((int)trackDb.trackingNo);
                     string shipDate_s = reader.GetString((int)trackDb.shipDate);
                     System.DateTime shipDate = ConvertStrToDate(shipDate_s);
                     string serviceClass = reader.GetString((int)trackDb.serviceClass);
                     string orderNo_s = reader.GetString((int)trackDb.orderNo);
+                    if (orderNo_s.Equals("")) orderNo_s = "0";
                     int orderNo = System.Convert.ToInt32(orderNo_s);
                     decimal weight = reader.GetDecimal((int)trackDb.weight);
                     decimal charge = reader.GetDecimal((int)trackDb.charge);

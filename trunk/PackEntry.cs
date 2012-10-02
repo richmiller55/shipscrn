@@ -54,10 +54,10 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARBg   = "P0925121";
-            this.ARNoBg = "P0925122";
-            this.Batch3 = "U0924123";
-            this.Batch4 = "U0924124";
+            this.ARBg   = "U1001121";
+            this.ARNoBg = "U1001122";
+            this.Batch3 = "U1001121";
+            this.Batch4 = "U1001122";
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -67,7 +67,7 @@ namespace ShipScrn
         void btnRunTillChange_Click(object sender, EventArgs e)
         {
             int invCount = 0;
-            moreRecords = iter.MoveNext();
+            moreRecords = true;
             while (moreRecords)
             {
                 if (invCount > 50) this.ARNoBg = this.ARBg;
@@ -95,7 +95,7 @@ namespace ShipScrn
                 processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
                 processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
                 WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
-                iter.MoveNext();
+                moreRecords = iter.MoveNext();
             }
         }
         void setTrackingGrid()

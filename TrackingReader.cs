@@ -94,7 +94,7 @@ namespace ShipScrn
                                                         "Initial Catalog=tracking");
             connection.Open();
             string sql;
-            bool runUPS = false;
+            bool runUPS = true;
             if (runUPS) sql = GetUPS_Sql();
             else sql = GetUSPS_Sql(); 
 

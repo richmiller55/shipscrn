@@ -29,7 +29,10 @@ namespace ShipScrn
         string arBg;
         string Batch3;
         string Batch4;
+        string U1, U2, U3, U4;
+        string currentUPSBatch;
         bool moreRecords;
+        int upsInvCount = 0;
         string processedInvoices;
         decimal handlingCharge = 2.50M;
         public PackEntry()
@@ -54,10 +57,17 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARNoBg = "U1009124";
-            this.ARBg   = "U1009124";
-            this.Batch3 = "P1009123";
-            this.Batch4 = "P1009124";
+            this.ARNoBg = "P1010122";
+            this.ARBg   = "P1010121";
+            this.Batch3 = "P1010123";
+            this.Batch4 = "P1010124";
+
+            this.U1 = "U1010122";
+            this.U2 = "U1010122";
+            this.U3 = "U1010123";
+            this.U4 = "U1010124";
+            this.currentUPSBatch = this.U1;
+
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -212,6 +222,34 @@ namespace ShipScrn
             this.ARBg = this.tbBGBatch.Text;
             this.ARNoBg = this.tbARBatch.Text;
         }
+        void setARBatch(PackSlipInfo info)
+        {
+            string trackingNums = ship.GetTrackingNumbers();
+            string[] trackArray = trackingNums.Split(':');
+            string trackingNum = trackArray[0];
+            string prefix = trackingNum.Substring(0,3);
+            if (prefix.Equals("1Z9"))
+            {
+                this.ARBatchName = this.currentUPSBatch;
+                upsInvCount++;
+                if (upsInvCount >= 50)
+                {
+                    this.currentUPSBatch = this.U2;
+                }
+                else if (upsInvCount >= 100)
+                {
+                    this.currentUPSBatch = this.U3;
+                }
+                else if (upsInvCount >= 150)
+                {
+                    this.currentUPSBatch = this.U4;
+                }
+            }
+            else
+            {
+                setARBatchIfBuyGrp(info);
+            }
+        }
         void setARBatchIfBuyGrp(PackSlipInfo info)
         {
             if (info.IsBuyGroup)
@@ -228,7 +266,7 @@ namespace ShipScrn
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
             int packNum = ship.GetPackSlipNo();
             PackSlipInfo info = new PackSlipInfo(session, packNum);
-            this.setARBatchIfBuyGrp(info);
+            this.setARBatch(info);
 
             this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.btnTrackOnly.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -252,7 +290,14 @@ namespace ShipScrn
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Black;
                 this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
-            if (info.OrderFF)
+            if (info.CustomerFF)
+            {
+                btnInvoice.Enabled = false;
+                lblInvoiceStatus.Text = "Customer Freight Free";
+                this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Red;
+                this.btnInvoice.BackColor = System.Drawing.Color.Black;
+            }
+            else if (info.OrderFF)
             {
                 btnInvoice.Enabled = false;
                 lblInvoiceStatus.Text = "Order Freight Free";

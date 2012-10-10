@@ -1,45 +1,59 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Data.Odbc;
 
 namespace ShipScrn
 {
     class BuyGroup
     {
-        Epicor.Mfg.BO.Customer custObj;
-        Epicor.Mfg.BO.CustomerDataSet ds;
         bool buyGroupMember = false;
-        public BuyGroup(Epicor.Mfg.Core.Session session, int custNum)
+        public BuyGroup(int custNum)
         {
-            this.custObj = new Epicor.Mfg.BO.Customer(session.ConnectionPool);
-            this.ds = this.custObj.GetByID(custNum);
-            this.DetermineIfBuyGroup();
-        }
-        public BuyGroup(Epicor.Mfg.Core.Session session, string custId)
-        {
-            this.custObj = new Epicor.Mfg.BO.Customer(session.ConnectionPool);
-            this.ds = this.custObj.GetByCustID(custId);
-            this.DetermineIfBuyGroup();
-        }
-        private void DetermineIfBuyGroup()
-        {
-            int arrayLen = this.ds.CustBillTo.Rows.Count;
-            while (arrayLen > 0)
-            {
-                Epicor.Mfg.BO.CustomerDataSet.CustBillToRow btRow =
-                (Epicor.Mfg.BO.CustomerDataSet.CustBillToRow)this.ds.CustBillTo.Rows[arrayLen - 1];
-
-                if (btRow.DefaultBillTo)
-                {
-                    this.buyGroupMember = true;
-                    break;
-                }
-                arrayLen--;
-            }
+            buyGroupMember = BuyGrupQuery(custNum);
         }
         public bool GetBuyGroupMember()
         {
             return this.buyGroupMember;
+        }
+        bool BuyGrupQuery(int custNum)
+        {
+            string baseQuery = @" 
+           select
+             cm.CustNum,
+             cm.CustID,
+             cm.Name,
+             ifnull(cb.DefaultBillTo,0) as DefaultBullTo
+           from Customer as cm
+           left join CustBillTo as cb
+             on cb.CustNum = cm.CustNum
+           where cb.DefaultBillTo = 1
+           ";
+            StringBuilder querystring = new StringBuilder();
+            querystring.Append(baseQuery);
+            querystring.AppendLine(" and cm.CustNum = " + custNum.ToString());
+            string Dsn = GetMySqlDsn();
+            bool member = false;
+            using (OdbcConnection connection = new OdbcConnection(Dsn))
+            {
+                OdbcCommand command = new OdbcCommand(querystring.ToString(), connection);
+                connection.Open();
+                OdbcDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string DefaultBillTo = reader["DefaultBullTo"].ToString();
+                    if (DefaultBillTo.Equals("1"))
+                    {
+                        member = true;
+                    }
+                }
+                reader.Close();
+            }
+            return member;
+        }
+        private string GetMySqlDsn()
+        {
+            return "DSN=GC; HOST=gc.rlm5.com; DB=coinet_db1; UID=focus; PWD=focusgroup";
         }
     }
 }

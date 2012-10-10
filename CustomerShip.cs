@@ -40,6 +40,7 @@ namespace ShipScrn
             catch (Exception e)
             {
                 this.packExists = false;
+                string message = e.Message;
             }
             if (this.packExists)
             {

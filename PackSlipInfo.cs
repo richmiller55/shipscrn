@@ -23,6 +23,7 @@ namespace ShipScrn
         string orderShipVia;
         string customerTerms;
         bool customerFF;
+        bool isUPS;
         string newInvoices = string.Empty;
         public PackSlipInfo(Epicor.Mfg.Core.Session vanSession, int pack)
         {
@@ -52,7 +53,7 @@ namespace ShipScrn
                 Epicor.Mfg.BO.CustShipDataSet.ShipHeadRow custShipRow;
                 custShipRow = (Epicor.Mfg.BO.CustShipDataSet.ShipHeadRow)custShipDs.ShipHead.Rows[0];
                 CustNum = custShipRow.CustNum;
-                BuyGroup bgCheck = new BuyGroup(session, CustNum);
+                BuyGroup bgCheck = new BuyGroup(CustNum);
                 this.IsBuyGroup = bgCheck.GetBuyGroupMember();
                 string trackingNum = custShipRow.TrackingNumber;
                 
@@ -173,14 +174,17 @@ namespace ShipScrn
           querystring.Append(baseQuery);
           querystring.AppendLine(" where OrderNum = " + OrderNum.ToString());
           string Dsn = GetMySqlDsn();
-          ArrayList al;
+          // ArrayList al;
           using (OdbcConnection connection = new OdbcConnection(Dsn))
             {
                 OdbcCommand command = new OdbcCommand(querystring.ToString(), connection);
                 connection.Open();
                 OdbcDataReader reader = command.ExecuteReader();
-                orderShipVia = reader["ShipViaCode"].ToString();
-                orderFound = true;
+                if (reader.HasRows)
+                {
+                    OrderShipVia = reader["ShipViaCode"].ToString();
+                    orderFound = true;
+                }
                 reader.Close();
             }
         }
@@ -188,10 +192,9 @@ namespace ShipScrn
         {
             string baseQuery = @" 
              SELECT 
-	        cm.CustNum as CustNum,
-                cm.FreightTerms as FreightTerms,
-
-                FROM Customer as cm ";
+	           cm.CustNum as CustNum,
+               cm.FreightTerms as FreightTerms
+               FROM Customer as cm ";
           StringBuilder querystring = new StringBuilder();
           querystring.Append(baseQuery);
           querystring.AppendLine(" where CustNum = " + CustNum.ToString());
@@ -202,15 +205,19 @@ namespace ShipScrn
               OdbcCommand command = new OdbcCommand(querystring.ToString(), connection);
                 connection.Open();
                 OdbcDataReader reader = command.ExecuteReader();
-                customerTerms = reader["FreightTerms"].ToString();
-            if (customerTerms.CompareTo("FF") == 0)
-            {
-                customerFF = true;
-            }
+                if (reader.HasRows)
+                {
+
+                    customerTerms = reader["FreightTerms"].ToString();
+
+                    if (customerTerms.CompareTo("FF") == 0)
+                    {
+                        CustomerFF = true;
+                    }
+                }
                 reader.Close();
             }
         }
-
         void GetCustomerInfoVan()
         {
             Epicor.Mfg.BO.Customer customerObj;
@@ -261,6 +268,17 @@ namespace ShipScrn
                 packNeedsTracking = value;
             }
         }
+        public string OrderShipVia
+        {
+            get
+            {
+                return orderShipVia;
+            }
+            set
+            {
+                orderShipVia = value;
+            }
+        }
         public bool CustomerFF
         {
             get
@@ -303,6 +321,17 @@ namespace ShipScrn
             set
             {
                 packNum = value;
+            }
+        }
+        public bool IsUPS
+        {
+            get
+            {
+                return isUPS;
+            }
+            set
+            {
+                isUPS = value;
             }
         }
         public bool IsBuyGroup

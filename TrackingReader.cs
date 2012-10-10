@@ -84,8 +84,12 @@ namespace ShipScrn
                 where ship_date = " + "'" + GetTodaysDateStr() + "'" +
                 @" and pack_num is not null 
                 and trk_upd_flag = 0
-                and service in ('USPS1ST','USPSPRI','FGRB')
-                and pack_num != 999999";                                       
+                and service in ('USPS1ST','USPSPRI','USPSPP','FGRB','F1DP','MGPP','20','F2DP')
+                and pack_num != 999999
+                and pack_num not in (317738,317791,317793,317795,317998,318003,318033,318034,318035,
+                                    318089,318090,318091,318092,318245,318248,318282,
+                                    318311,318313,318315,318317,318336,318340,318357
+                ) ";
             return sql;
         }
         public SqlDataReader SetDataReader()
@@ -134,7 +138,11 @@ namespace ShipScrn
                 {
                     decimal packSlip_d = reader.GetDecimal((int)trackDb.packSlip);
                     if (packSlip_d.Equals(999999)) continue;
-
+                    if (packSlip_d > 999999m)
+                    {
+                        thingsToRead = reader.Read();
+                        continue;
+                    }
                     int packSlip = System.Convert.ToInt32(packSlip_d);
                     string trackingNo = reader.GetString((int)trackDb.trackingNo);
                     string shipDate_s = reader.GetString((int)trackDb.shipDate);

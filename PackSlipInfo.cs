@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
+using System.Data.Odbc;
 
 namespace ShipScrn
 {
@@ -104,7 +105,6 @@ namespace ShipScrn
 
                 try
                 {
-                    
                     trackDtlObj.Update(ds);
                 }
                 catch (Exception e)
@@ -163,6 +163,69 @@ namespace ShipScrn
         }
         void GetOrderInfo()
         {
+            string baseQuery = @" 
+             SELECT 
+	        oh.OrderNum as OrderNum,
+                oh.freightFree as freightFree,
+                oh.ShipViaCode as ShipViaCode
+                FROM orderHed as oh ";
+          StringBuilder querystring = new StringBuilder();
+          querystring.Append(baseQuery);
+          querystring.AppendLine(" where OrderNum = " + OrderNum.ToString());
+          string Dsn = GetMySqlDsn();
+          ArrayList al;
+          using (OdbcConnection connection = new OdbcConnection(Dsn))
+            {
+                OdbcCommand command = new OdbcCommand(querystring.ToString(), connection);
+                connection.Open();
+                OdbcDataReader reader = command.ExecuteReader();
+                orderShipVia = reader["ShipViaCode"].ToString();
+                orderFound = true;
+                reader.Close();
+            }
+        }
+        void GetCustomerInfo()
+        {
+            string baseQuery = @" 
+             SELECT 
+	        cm.CustNum as CustNum,
+                cm.FreightTerms as FreightTerms,
+
+                FROM Customer as cm ";
+          StringBuilder querystring = new StringBuilder();
+          querystring.Append(baseQuery);
+          querystring.AppendLine(" where CustNum = " + CustNum.ToString());
+          string Dsn = GetMySqlDsn();
+          ArrayList al;
+          using (OdbcConnection connection = new OdbcConnection(Dsn))
+            {
+              OdbcCommand command = new OdbcCommand(querystring.ToString(), connection);
+                connection.Open();
+                OdbcDataReader reader = command.ExecuteReader();
+                customerTerms = reader["FreightTerms"].ToString();
+            if (customerTerms.CompareTo("FF") == 0)
+            {
+                customerFF = true;
+            }
+                reader.Close();
+            }
+        }
+
+        void GetCustomerInfoVan()
+        {
+            Epicor.Mfg.BO.Customer customerObj;
+            customerObj = new Epicor.Mfg.BO.Customer(session.ConnectionPool);
+            Epicor.Mfg.BO.CustomerDataSet ds;
+            ds = customerObj.GetByID(CustNum);
+            Epicor.Mfg.BO.CustomerDataSet.CustomerRow row = (Epicor.Mfg.BO.CustomerDataSet.CustomerRow)ds.Customer.Rows[0];
+            customerTerms = row.ShortChar01;
+            if (customerTerms.CompareTo("FF") == 0)
+            {
+                customerFF = true;
+            }
+        }
+        void GetOrderInfoVan()
+        {
             Epicor.Mfg.BO.SalesOrder salesOrderObj;
             salesOrderObj = new Epicor.Mfg.BO.SalesOrder(session.ConnectionPool);
             Epicor.Mfg.BO.SalesOrderDataSet soDs = new Epicor.Mfg.BO.SalesOrderDataSet();
@@ -185,19 +248,6 @@ namespace ShipScrn
             if (result)
             {
                 orderFound = true;
-            }
-        }
-        void GetCustomerInfo()
-        {
-            Epicor.Mfg.BO.Customer customerObj;
-            customerObj = new Epicor.Mfg.BO.Customer(session.ConnectionPool);
-            Epicor.Mfg.BO.CustomerDataSet ds;
-            ds = customerObj.GetByID(CustNum);
-            Epicor.Mfg.BO.CustomerDataSet.CustomerRow row = (Epicor.Mfg.BO.CustomerDataSet.CustomerRow)ds.Customer.Rows[0];
-            customerTerms = row.ShortChar01;
-            if (customerTerms.CompareTo("FF") == 0)
-            {
-                customerFF = true;
             }
         }
         public bool NeedsTracking
@@ -266,6 +316,11 @@ namespace ShipScrn
                 isBuyGroup = value;
             }
         }
+        private string GetMySqlDsn()
+        {
+            return "DSN=GC; HOST=gc.rlm5.com; DB=coinet_db1; UID=focus; PWD=focusgroup";
+        }
+
     }
 }
         

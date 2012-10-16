@@ -57,21 +57,27 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARNoBg = "P1010122";
-            this.ARBg   = "P1010121";
-            this.Batch3 = "P1010123";
-            this.Batch4 = "P1010124";
+            this.ARNoBg = "P1015124";
+            this.ARBg   = "P1015123";
+            this.Batch3 = "P1015123";
+            this.Batch4 = "P1015124";
 
-            this.U1 = "U1010122";
-            this.U2 = "U1010122";
-            this.U3 = "U1010123";
-            this.U4 = "U1010124";
+            this.U1 = "U1015122";
+            this.U2 = "U1015122";
+            this.U3 = "U1015123";
+            this.U4 = "U1015124";
             this.currentUPSBatch = this.U1;
 
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
-            throw new Exception("The method or operation is not implemented.");
+            string user = "rich";
+            string password = "homefed55";
+            string database = "System";
+            VanAccess va = new VanAccess(user, password, database);
+            SetVanAccess(va);  // maybe do this on the VanAccess class
+
+            // throw new Exception("The method or operation is not implemented.");
         }
 
         void btnRunTillChange_Click(object sender, EventArgs e)
@@ -297,7 +303,7 @@ namespace ShipScrn
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Red;
                 this.btnInvoice.BackColor = System.Drawing.Color.Black;
             }
-            else if (info.OrderFF)
+            if (info.OrderFF)
             {
                 btnInvoice.Enabled = false;
                 lblInvoiceStatus.Text = "Order Freight Free";
@@ -354,8 +360,27 @@ namespace ShipScrn
             shipments = trackData.GetShipmentsHash();
             ShipKeys = shipments.Keys;
             iter = shipments.GetEnumerator();
-            moreRecords = iter.MoveNext();
-            setScreenVars((Shipment)iter.Value);
+            bool allOK = true;
+            try
+            {
+                moreRecords = iter.MoveNext();
+            }
+            catch (System.InvalidOperationException e)
+            {
+                string message = e.Message;
+                lblInvoiceStatus.Text = "No Packs left to invoice:";
+                allOK = false;
+            }
+            catch (Exception e)
+            {
+                string message = e.Message;
+                lblInvoiceStatus.Text = "No Packs left to invoice:";
+                allOK = false;
+            }
+            if (allOK)
+            {
+                setScreenVars((Shipment)iter.Value);
+            }
         }
 
         void processFedExFile()

@@ -183,6 +183,11 @@ namespace ShipScrn
                 if (reader.HasRows)
                 {
                     OrderShipVia = reader["ShipViaCode"].ToString();
+                    string ffFlag = reader["freightFree"].ToString();
+                    if (ffFlag.Equals("1"))
+                    {
+                        OrderFF = true;
+                    }
                     orderFound = true;
                 }
                 reader.Close();

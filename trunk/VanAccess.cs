@@ -25,7 +25,12 @@ namespace ShipScrn
             }
             catch (Exception e)
             {
+
                 string message = e.Message;
+                MessageBox.Show(message.ToString(),
+                    "Did not log in",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
             }
         }
         public Epicor.Mfg.Core.Session getSession()

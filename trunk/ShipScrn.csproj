@@ -74,7 +74,7 @@
     </Reference>
     <Reference Include="Epicor.Mfg.Core.Session, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\client803\client\Epicor.Mfg.Core.Session.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\client803\client\Epicor.Mfg.Core.Session.dll</HintPath>
     </Reference>
     <Reference Include="Epicor.Mfg.IF.IARInvoice, Version=8.3.404.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -57,15 +57,15 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARNoBg = "P1015124";
-            this.ARBg   = "P1015123";
-            this.Batch3 = "P1015123";
-            this.Batch4 = "P1015124";
+            this.ARNoBg = "P1019122";
+            this.ARBg   = "P1019121";
+            this.Batch3 = "P1019123";
+            this.Batch4 = "P1019124";
 
-            this.U1 = "U1015122";
-            this.U2 = "U1015122";
-            this.U3 = "U1015123";
-            this.U4 = "U1015124";
+            this.U1 = "U1019121";
+            this.U2 = "U1019122";
+            this.U3 = "U1019123";
+            this.U4 = "U1019124";
             this.currentUPSBatch = this.U1;
 
         }

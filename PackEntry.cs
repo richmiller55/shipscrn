@@ -48,7 +48,6 @@ namespace ShipScrn
             moreRecords = true;
             btnLogin.Click += new EventHandler(btnLogin_Click);
             tbPackNo.LostFocus += new EventHandler(tbPackNo_LostFocus);
-            btnFedExFileOpen.Click += new EventHandler(btnFedExFileOpen_Click);
             btnInvoice.Click += new EventHandler(btnInvoice_Click);
             btnTrackOnly.Click += new EventHandler(btnTrackOnly_Click);
             btnSkip.Click += new EventHandler(btnSkip_Click);
@@ -421,21 +420,6 @@ namespace ShipScrn
             moreRecords = iter.MoveNext();
             setScreenVars((Shipment)iter.Value);
         }
-        void btnFedExFileOpen_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Filter = "Text Files (*.txt)|*.txt";
-            if (openFile.ShowDialog() == DialogResult.OK)
-            {
-                for (int i = 0; i < openFile.FileNames.Length; i++)
-                {
-                    filename = Path.GetFullPath(openFile.FileNames[i].ToString());
-                    tbFedExFile.Text = filename;
-                }
-            }
-            processFedExFile();
-        }
-        // void btnRunTrackTable
         void tbPackNo_LostFocus(object sender, EventArgs e)
         {
             

@@ -46,8 +46,6 @@ namespace ShipScrn
             this.lblAddr1 = new System.Windows.Forms.Label();
             this.tbAddr1 = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
-            this.tbFedExFile = new System.Windows.Forms.TextBox();
-            this.btnFedExFileOpen = new System.Windows.Forms.Button();
             this.btnInvoice = new System.Windows.Forms.Button();
             this.tbOrderNo = new System.Windows.Forms.TextBox();
             this.lbOrderNo = new System.Windows.Forms.Label();
@@ -67,6 +65,7 @@ namespace ShipScrn
             this.tbProcessedInvoices = new System.Windows.Forms.TextBox();
             this.lbInvoiceGroup = new System.Windows.Forms.Label();
             this.grpAction = new System.Windows.Forms.GroupBox();
+            this.btnRunTrackTable = new System.Windows.Forms.Button();
             this.btnRunTillDone = new System.Windows.Forms.Button();
             this.btnRunTillChange = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -82,7 +81,6 @@ namespace ShipScrn
             this.tbBGBatch = new System.Windows.Forms.TextBox();
             this.lbBGBatch = new System.Windows.Forms.Label();
             this.gbArBatches = new System.Windows.Forms.GroupBox();
-            this.btnRunTrackTable = new System.Windows.Forms.Button();
             this.gbShipAdr.SuspendLayout();
             this.gbTrackingNos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracking)).BeginInit();
@@ -111,9 +109,9 @@ namespace ShipScrn
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(15, 12);
+            this.btnLogin.Location = new System.Drawing.Point(403, 244);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(67, 22);
+            this.btnLogin.Size = new System.Drawing.Size(126, 22);
             this.btnLogin.TabIndex = 1;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
@@ -251,22 +249,6 @@ namespace ShipScrn
             this.lblName.Size = new System.Drawing.Size(35, 13);
             this.lblName.TabIndex = 5;
             this.lblName.Text = "Name";
-            // 
-            // tbFedExFile
-            // 
-            this.tbFedExFile.Location = new System.Drawing.Point(104, 12);
-            this.tbFedExFile.Name = "tbFedExFile";
-            this.tbFedExFile.Size = new System.Drawing.Size(307, 20);
-            this.tbFedExFile.TabIndex = 6;
-            // 
-            // btnFedExFileOpen
-            // 
-            this.btnFedExFileOpen.Location = new System.Drawing.Point(417, 13);
-            this.btnFedExFileOpen.Name = "btnFedExFileOpen";
-            this.btnFedExFileOpen.Size = new System.Drawing.Size(112, 22);
-            this.btnFedExFileOpen.TabIndex = 8;
-            this.btnFedExFileOpen.Text = "Get Write Back";
-            this.btnFedExFileOpen.UseVisualStyleBackColor = true;
             // 
             // btnInvoice
             // 
@@ -439,13 +421,22 @@ namespace ShipScrn
             this.grpAction.TabStop = false;
             this.grpAction.Text = "Actions";
             // 
+            // btnRunTrackTable
+            // 
+            this.btnRunTrackTable.Location = new System.Drawing.Point(6, 25);
+            this.btnRunTrackTable.Name = "btnRunTrackTable";
+            this.btnRunTrackTable.Size = new System.Drawing.Size(126, 23);
+            this.btnRunTrackTable.TabIndex = 28;
+            this.btnRunTrackTable.Text = "Load Tracking";
+            this.btnRunTrackTable.UseVisualStyleBackColor = true;
+            // 
             // btnRunTillDone
             // 
             this.btnRunTillDone.Location = new System.Drawing.Point(6, 168);
             this.btnRunTillDone.Name = "btnRunTillDone";
             this.btnRunTillDone.Size = new System.Drawing.Size(126, 23);
             this.btnRunTillDone.TabIndex = 27;
-            this.btnRunTillDone.Text = "Run Till Done";
+            this.btnRunTillDone.Text = "Fast Login";
             this.btnRunTillDone.UseVisualStyleBackColor = true;
             // 
             // btnRunTillChange
@@ -454,7 +445,7 @@ namespace ShipScrn
             this.btnRunTillChange.Name = "btnRunTillChange";
             this.btnRunTillChange.Size = new System.Drawing.Size(126, 23);
             this.btnRunTillChange.TabIndex = 26;
-            this.btnRunTillChange.Text = "Run Till Change";
+            this.btnRunTillChange.Text = "Run";
             this.btnRunTillChange.UseVisualStyleBackColor = true;
             // 
             // groupBox1
@@ -590,15 +581,6 @@ namespace ShipScrn
             this.gbArBatches.TabStop = false;
             this.gbArBatches.Text = "AR Batches";
             // 
-            // btnRunTrackTable
-            // 
-            this.btnRunTrackTable.Location = new System.Drawing.Point(6, 25);
-            this.btnRunTrackTable.Name = "btnRunTrackTable";
-            this.btnRunTrackTable.Size = new System.Drawing.Size(126, 23);
-            this.btnRunTrackTable.TabIndex = 28;
-            this.btnRunTrackTable.Text = "Run Tracking";
-            this.btnRunTrackTable.UseVisualStyleBackColor = true;
-            // 
             // PackEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -610,8 +592,6 @@ namespace ShipScrn
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpAction);
             this.Controls.Add(this.gbTrackingNos);
-            this.Controls.Add(this.btnFedExFileOpen);
-            this.Controls.Add(this.tbFedExFile);
             this.Controls.Add(this.gbShipAdr);
             this.Controls.Add(this.btnLogin);
             this.Name = "PackEntry";
@@ -630,7 +610,6 @@ namespace ShipScrn
             this.gbArBatches.ResumeLayout(false);
             this.gbArBatches.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -652,8 +631,6 @@ namespace ShipScrn
         private System.Windows.Forms.TextBox tbPostalCode;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.TextBox tbState;
-        private System.Windows.Forms.TextBox tbFedExFile;
-        private System.Windows.Forms.Button btnFedExFileOpen;
         private System.Windows.Forms.Button btnInvoice;
         private System.Windows.Forms.TextBox tbOrderNo;
         private System.Windows.Forms.Label lbOrderNo;

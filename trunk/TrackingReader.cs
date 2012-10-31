@@ -64,6 +64,7 @@ namespace ShipScrn
                 @" and pack_num is not null 
                 and trk_upd_flag = 0
                 and service in ('ground','standard','USPS1ST','USPSPRI','USPSPP','FGRB','F1DP','MGPP','20','F2DP')
+                -- and service in ('ground')
                 and pack_num != 999999
                  ";
             return sql;

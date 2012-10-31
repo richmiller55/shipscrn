@@ -27,8 +27,9 @@ namespace ShipScrn
         string arBatchName;
         string arNoBg;
         string arBg;
-        string Batch3;
-        string Batch4;
+        string arNoBg2;
+        string arBg2;
+
         string U1, U2, U3, U4;
         string currentUPSBatch;
         bool moreRecords;
@@ -57,17 +58,16 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            this.ARNoBg = "P1019122";
-            this.ARBg   = "P1019121";
-            this.Batch3 = "P1019123";
-            this.Batch4 = "P1019124";
+            this.ARNoBg = "P1031121";
+            this.ARBg   = "P1031122";
+            this.ARNoBg2 = "P1031123";
+            this.ARBg2   = "P1031124";
 
-            this.U1 = "U1019121";
-            this.U2 = "U1019122";
-            this.U3 = "U1019123";
-            this.U4 = "U1019124";
+            this.U1 = "U1031121";
+            this.U2 = "U1031122";
+            this.U3 = "U1031123";
+            this.U4 = "U1031124";
             this.currentUPSBatch = this.U1;
-
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -79,17 +79,20 @@ namespace ShipScrn
 
             // throw new Exception("The method or operation is not implemented.");
         }
-
+        Hashtable InitBatchCount()
+        {
+            Hashtable batchCount = new Hashtable();
+            batchCount.Add("buyGroup",0);
+            batchCount.Add("notBuyingGroup",0);
+            batchCount.Add("UPS", 0);
+            return batchCount;
+        }
         void btnRunTillChange_Click(object sender, EventArgs e)
         {
-            int invCount = 0;
             moreRecords = true;
+            Hashtable batchCount = InitBatchCount();    
             while (moreRecords)
             {
-                if (invCount > 50) this.ARNoBg = this.ARBg;
-                if (invCount > 100) this.ARNoBg = this.Batch3;
-                if (invCount > 150) this.ARNoBg = this.Batch4;
-                invCount++;
                 try
                 {
                     this.ship = (Shipment)iter.Value;
@@ -103,12 +106,21 @@ namespace ShipScrn
                 this.Refresh();
                 this.saveArBatchTextBoxValues();
                 Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-                int PackSlipNo = this.ship.GetPackSlipNo();
+                int PackSlipNo = ship.GetPackSlipNo();
+                PackSlipInfo info = new PackSlipInfo(session, PackSlipNo);
+                this.setARBatch(info,batchCount);
+                string freightMessage = "Frt Free";
                 ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
                 string trackingNo = ship.GetTrackingNumbers();
+                if (!info.IsPackFF() && ship.GetTotalCharge().CompareTo(0.0M) > 0)
+                {
+                    decimal amount = ship.GetTotalCharge() + this.handlingCharge;
+                    arInvoice.GetNewInvcMisc(amount, trackingNo);
+                    freightMessage = "Bill Frt";
+                }
                 arInvoice.AddTrackingToInvcHead(PackSlipNo.ToString(), trackingNo);
                 int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
-                processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
+                processedInvoices += freightMessage + InvoiceNo.ToString();
                 processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
                 WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
                 moreRecords = iter.MoveNext();
@@ -228,7 +240,7 @@ namespace ShipScrn
             this.ARBg = this.tbBGBatch.Text;
             this.ARNoBg = this.tbARBatch.Text;
         }
-        void setARBatch(PackSlipInfo info)
+        void setARBatch(PackSlipInfo info,Hashtable batchCounts)
         {
             string trackingNums = ship.GetTrackingNumbers();
             string[] trackArray = trackingNums.Split(':');
@@ -237,34 +249,44 @@ namespace ShipScrn
             if (prefix.Equals("1Z9"))
             {
                 this.ARBatchName = this.currentUPSBatch;
-                upsInvCount++;
-                if (upsInvCount >= 50)
+                int upsCount = (int)batchCounts["UPS"];
+                upsCount += 1;
+                batchCounts["UPS"] = upsCount;
+                if ((int)batchCounts["UPS"] >= 50)
                 {
                     this.currentUPSBatch = this.U2;
                 }
-                else if (upsInvCount >= 100)
+                else if ((int)batchCounts["UPS"] >= 100)
                 {
                     this.currentUPSBatch = this.U3;
                 }
-                else if (upsInvCount >= 150)
+                else if ((int)batchCounts["UPS"] >= 150)
                 {
                     this.currentUPSBatch = this.U4;
                 }
             }
             else
             {
-                setARBatchIfBuyGrp(info);
+                setARBatchIfBuyGrp(info,batchCounts);
             }
         }
-        void setARBatchIfBuyGrp(PackSlipInfo info)
+        void setARBatchIfBuyGrp(PackSlipInfo info,Hashtable batchCounts)
         {
             if (info.IsBuyGroup)
             {
+                int buyGroupCount = (int)batchCounts["buyGroup"];
+                buyGroupCount += 1;
+                batchCounts["buyGroup"] = buyGroupCount;
                 this.ARBatchName = this.ARBg;
+                if ((int)batchCounts["buyGroup"] > 50) this.ARBg = this.ARBg2;
             }
             else
             {
                 this.ARBatchName = this.ARNoBg;
+                int notBuyGroupCount = (int)batchCounts["notBuyingGroup"];
+                notBuyGroupCount += 1;
+                batchCounts["notBuyingGroup"] = notBuyGroupCount;
+                if ((int)batchCounts["notBuyingGroup"] > 50) this.ARNoBg = this.ARNoBg2;
             }
         }
         void setPackNumInfo()
@@ -272,7 +294,7 @@ namespace ShipScrn
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
             int packNum = ship.GetPackSlipNo();
             PackSlipInfo info = new PackSlipInfo(session, packNum);
-            this.setARBatch(info);
+            // this.setARBatch(info);
 
             this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.btnTrackOnly.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -499,5 +521,28 @@ namespace ShipScrn
                 arNoBg = value;
             }
         }
+        public string ARBg2
+        {
+            get
+            {
+                return arBg2;
+            }
+            set
+            {
+                arBg2 = value;
+            }
+        }
+        public string ARNoBg2
+        {
+            get
+            {
+                return arNoBg2;
+            }
+            set
+            {
+                arNoBg2 = value;
+            }
+        }
+
     }
 }

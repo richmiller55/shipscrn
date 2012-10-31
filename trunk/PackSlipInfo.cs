@@ -16,6 +16,7 @@ namespace ShipScrn
         int CustNum;
         int OrderNum;
         bool orderFF;
+       
         bool packFound;
         bool orderFound;
         bool packNeedsTracking;
@@ -305,6 +306,12 @@ namespace ShipScrn
             {
                 invoiced = value;
             }
+        }
+        public bool IsPackFF()
+        {
+            bool packFF = false;
+            if (orderFF || customerFF) packFF = true;
+            return packFF;
         }
         public bool OrderFF
         {

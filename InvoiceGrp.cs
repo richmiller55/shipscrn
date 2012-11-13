@@ -27,6 +27,7 @@ namespace ShipScrn
             }
             catch (Exception e)
             {
+                string message = e.Message;
                 invcGrpDs = new Epicor.Mfg.BO.InvcGrpDataSet();
                 invcGrpObj.GetNewInvcGrp(invcGrpDs);
                 Epicor.Mfg.BO.InvcGrpDataSet.InvcGrpRow row =
@@ -36,14 +37,14 @@ namespace ShipScrn
                 DateTime today = new DateTime();
                 row.InvoiceDate = today;
                 this.invoiceDate = today;
-                string message;
+                string message2;
                 try
                 {
                     invcGrpObj.Update(invcGrpDs);
                 }
                 catch (Exception e2)
                 {
-                    message = e.Message;
+                    message2 = e2.Message;
                 }
             }
         }

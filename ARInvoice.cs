@@ -13,7 +13,6 @@ namespace ShipScrn
         Hashtable InvoicePacks;
         string packSlip;
         int lastInvoiceNo;
-        string batchName;
         string newInvoices = string.Empty;
         public ARInvoice(Epicor.Mfg.Core.Session vanSession, string arInvGroup, string pack)
         {
@@ -130,7 +129,10 @@ namespace ShipScrn
             return this.invoiceNo;
         }
          * */
-        public void GetNewInvcMisc(decimal amount, string trackingNo)
+        public void GetNewInvcMisc(decimal amount,
+                string trackingNo,
+                string frtMiscCode,
+                string taxCatID)
         {
             Epicor.Mfg.BO.ARInvoiceDataSet ds = new Epicor.Mfg.BO.ARInvoiceDataSet();
             ds = arInvoice.GetByID(this.lastInvoiceNo);  // maybe better to lookup from pack
@@ -138,14 +140,13 @@ namespace ShipScrn
             arInvoice.GetNewInvcMisc(ds, this.lastInvoiceNo, invoiceLineDefault);
             Epicor.Mfg.BO.ARInvoiceDataSet.InvcMiscRow miscRow =
                 (Epicor.Mfg.BO.ARInvoiceDataSet.InvcMiscRow)ds.InvcMisc.Rows[0];
-            string frtMiscCode = "1";
             miscRow.MiscAmt = amount;
             miscRow.DocMiscAmt = amount;
             miscRow.DspDocMiscAmt = amount;
             miscRow.DspMiscAmt = amount;
             miscRow.Description = "FedEx Freight Charge";
             miscRow.MiscCode = frtMiscCode;
-            miscRow.TaxCatID = "FREIGHT";
+            miscRow.TaxCatID = taxCatID;
             if (trackingNo.Length > 50)
             {
                 miscRow.ShortChar01 = trackingNo.Substring(0, 49);

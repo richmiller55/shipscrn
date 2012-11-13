@@ -46,7 +46,6 @@ namespace ShipScrn
             this.lblAddr1 = new System.Windows.Forms.Label();
             this.tbAddr1 = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
-            this.btnInvoice = new System.Windows.Forms.Button();
             this.tbOrderNo = new System.Windows.Forms.TextBox();
             this.lbOrderNo = new System.Windows.Forms.Label();
             this.tbShipDate = new System.Windows.Forms.TextBox();
@@ -57,8 +56,6 @@ namespace ShipScrn
             this.tbClassOfService = new System.Windows.Forms.TextBox();
             this.tbWeight = new System.Windows.Forms.TextBox();
             this.tbCharge = new System.Windows.Forms.TextBox();
-            this.btnTrackOnly = new System.Windows.Forms.Button();
-            this.btnSkip = new System.Windows.Forms.Button();
             this.gbTrackingNos = new System.Windows.Forms.GroupBox();
             this.dgvTracking = new System.Windows.Forms.DataGridView();
             this.tbARBatch = new System.Windows.Forms.TextBox();
@@ -250,17 +247,6 @@ namespace ShipScrn
             this.lblName.TabIndex = 5;
             this.lblName.Text = "Name";
             // 
-            // btnInvoice
-            // 
-            this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnInvoice.Location = new System.Drawing.Point(6, 55);
-            this.btnInvoice.Name = "btnInvoice";
-            this.btnInvoice.Size = new System.Drawing.Size(126, 22);
-            this.btnInvoice.TabIndex = 10;
-            this.btnInvoice.Text = "Invoice Freight";
-            this.btnInvoice.UseVisualStyleBackColor = false;
-            // 
             // tbOrderNo
             // 
             this.tbOrderNo.Location = new System.Drawing.Point(92, 45);
@@ -341,24 +327,6 @@ namespace ShipScrn
             this.tbCharge.Size = new System.Drawing.Size(100, 20);
             this.tbCharge.TabIndex = 21;
             // 
-            // btnTrackOnly
-            // 
-            this.btnTrackOnly.Location = new System.Drawing.Point(6, 83);
-            this.btnTrackOnly.Name = "btnTrackOnly";
-            this.btnTrackOnly.Size = new System.Drawing.Size(126, 22);
-            this.btnTrackOnly.TabIndex = 24;
-            this.btnTrackOnly.Text = "Add Tracking Only";
-            this.btnTrackOnly.UseVisualStyleBackColor = true;
-            // 
-            // btnSkip
-            // 
-            this.btnSkip.Location = new System.Drawing.Point(6, 111);
-            this.btnSkip.Name = "btnSkip";
-            this.btnSkip.Size = new System.Drawing.Size(126, 22);
-            this.btnSkip.TabIndex = 25;
-            this.btnSkip.Text = "Skip Pack";
-            this.btnSkip.UseVisualStyleBackColor = true;
-            // 
             // gbTrackingNos
             // 
             this.gbTrackingNos.Controls.Add(this.dgvTracking);
@@ -411,9 +379,6 @@ namespace ShipScrn
             this.grpAction.Controls.Add(this.btnRunTrackTable);
             this.grpAction.Controls.Add(this.btnRunTillDone);
             this.grpAction.Controls.Add(this.btnRunTillChange);
-            this.grpAction.Controls.Add(this.btnInvoice);
-            this.grpAction.Controls.Add(this.btnTrackOnly);
-            this.grpAction.Controls.Add(this.btnSkip);
             this.grpAction.Location = new System.Drawing.Point(397, 40);
             this.grpAction.Name = "grpAction";
             this.grpAction.Size = new System.Drawing.Size(138, 198);
@@ -423,7 +388,7 @@ namespace ShipScrn
             // 
             // btnRunTrackTable
             // 
-            this.btnRunTrackTable.Location = new System.Drawing.Point(6, 25);
+            this.btnRunTrackTable.Location = new System.Drawing.Point(6, 54);
             this.btnRunTrackTable.Name = "btnRunTrackTable";
             this.btnRunTrackTable.Size = new System.Drawing.Size(126, 23);
             this.btnRunTrackTable.TabIndex = 28;
@@ -432,7 +397,7 @@ namespace ShipScrn
             // 
             // btnRunTillDone
             // 
-            this.btnRunTillDone.Location = new System.Drawing.Point(6, 168);
+            this.btnRunTillDone.Location = new System.Drawing.Point(6, 23);
             this.btnRunTillDone.Name = "btnRunTillDone";
             this.btnRunTillDone.Size = new System.Drawing.Size(126, 23);
             this.btnRunTillDone.TabIndex = 27;
@@ -441,7 +406,7 @@ namespace ShipScrn
             // 
             // btnRunTillChange
             // 
-            this.btnRunTillChange.Location = new System.Drawing.Point(6, 139);
+            this.btnRunTillChange.Location = new System.Drawing.Point(6, 83);
             this.btnRunTillChange.Name = "btnRunTillChange";
             this.btnRunTillChange.Size = new System.Drawing.Size(126, 23);
             this.btnRunTillChange.TabIndex = 26;
@@ -631,7 +596,6 @@ namespace ShipScrn
         private System.Windows.Forms.TextBox tbPostalCode;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.TextBox tbState;
-        private System.Windows.Forms.Button btnInvoice;
         private System.Windows.Forms.TextBox tbOrderNo;
         private System.Windows.Forms.Label lbOrderNo;
         private System.Windows.Forms.TextBox tbShipDate;
@@ -642,8 +606,6 @@ namespace ShipScrn
         private System.Windows.Forms.TextBox tbClassOfService;
         private System.Windows.Forms.TextBox tbWeight;
         private System.Windows.Forms.TextBox tbCharge;
-        private System.Windows.Forms.Button btnTrackOnly;
-        private System.Windows.Forms.Button btnSkip;
         private System.Windows.Forms.GroupBox gbTrackingNos;
         private System.Windows.Forms.TextBox tbARBatch;
         private System.Windows.Forms.TextBox tbProcessedInvoices;

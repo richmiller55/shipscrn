@@ -16,7 +16,6 @@ namespace ShipScrn
         CustomerShip custship;
         Hashtable shipments;
         ICollection ShipKeys;
-        PackSlipInfo info;
         DataTable dtTrack;
         IDictionaryEnumerator iter;
         Hashtable InvoicePacks;
@@ -33,7 +32,6 @@ namespace ShipScrn
         string U1, U2, U3, U4;
         string currentUPSBatch;
         bool moreRecords;
-        int upsInvCount = 0;
         string processedInvoices;
         decimal handlingCharge = 2.50M;
         public PackEntry()
@@ -47,25 +45,22 @@ namespace ShipScrn
             setupDataTable();
             moreRecords = true;
             btnLogin.Click += new EventHandler(btnLogin_Click);
-            tbPackNo.LostFocus += new EventHandler(tbPackNo_LostFocus);
-            btnInvoice.Click += new EventHandler(btnInvoice_Click);
-            btnTrackOnly.Click += new EventHandler(btnTrackOnly_Click);
-            btnSkip.Click += new EventHandler(btnSkip_Click);
+            
             btnRunTillChange.Click += new EventHandler(btnRunTillChange_Click);
             btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
             btnRunTrackTable.Click += new EventHandler(btnRunTrackTable_Click);
         }
         void initArBatchNames()
         {
-            this.ARNoBg = "P1031121";
-            this.ARBg   = "P1031122";
-            this.ARNoBg2 = "P1031123";
-            this.ARBg2   = "P1031124";
+            this.ARNoBg = "P1113123";
+            this.ARBg = "P1113122";
+            this.ARNoBg2 = "P1113123";
+            this.ARBg2 = "P1113124";
 
-            this.U1 = "U1031121";
-            this.U2 = "U1031122";
-            this.U3 = "U1031123";
-            this.U4 = "U1031124";
+            this.U1 = "U1113122";
+            this.U2 = "U1113122";
+            this.U3 = "U1113123";
+            this.U4 = "U1113124";
             this.currentUPSBatch = this.U1;
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
@@ -101,20 +96,36 @@ namespace ShipScrn
                     string message = e2.Message;
                     this.Refresh();
                 }
-                setScreenVars((Shipment)iter.Value);
-                this.Refresh();
-                this.saveArBatchTextBoxValues();
                 Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
                 int PackSlipNo = ship.GetPackSlipNo();
                 PackSlipInfo info = new PackSlipInfo(session, PackSlipNo);
-                this.setARBatch(info,batchCount);
+                if (info.Invoiced)
+                {
+                    moreRecords = iter.MoveNext();
+                    continue;
+                }
+                this.setARBatch(info, batchCount);
+
+                setScreenVars((Shipment)iter.Value);
+                this.Refresh();
+                this.saveArBatchTextBoxValues();
                 string freightMessage = "Frt Free";
                 ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
                 string trackingNo = ship.GetTrackingNumbers();
                 if (!info.IsPackFF() && ship.GetTotalCharge().CompareTo(0.0M) > 0)
                 {
+                    string frtMiscCode = "1";
+                    string taxCodeID = "FREIGHT";
+                    if (info.IsFreightTaxed())
+                    {
+                        frtMiscCode = "2";
+                        taxCodeID = "PRODFRT";
+                    }
                     decimal amount = ship.GetTotalCharge() + this.handlingCharge;
-                    arInvoice.GetNewInvcMisc(amount, trackingNo);
+                    arInvoice.GetNewInvcMisc(amount, 
+                            trackingNo, 
+                            frtMiscCode,
+                            taxCodeID);
                     freightMessage = "Bill Frt";
                 }
                 arInvoice.AddTrackingToInvcHead(PackSlipNo.ToString(), trackingNo);
@@ -194,40 +205,6 @@ namespace ShipScrn
                 this.Refresh();
             }
         }
-        void btnTrackOnly_Click(object sender, EventArgs e)
-        {
-            this.saveArBatchTextBoxValues();
-            Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-            int PackSlipNo = this.ship.GetPackSlipNo();
-            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
-            string trackingNo = ship.GetTrackingNumbers();
-            arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
-            int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
-            processedInvoices += "Invoiced No Frt " + InvoiceNo.ToString();
-            processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
-            WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
-            nextRecord();
-        }
-        void btnInvoice_Click(object sender, EventArgs e)
-        {
-            this.saveArBatchTextBoxValues();
-            Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-            int PackSlipNo = this.ship.GetPackSlipNo();
-            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
-            string trackingNo = ship.GetTrackingNumbers();
-            
-            if (ship.GetTotalCharge().CompareTo(0.0M) > 0)
-            {
-                decimal amount = ship.GetTotalCharge() + this.handlingCharge;
-                arInvoice.GetNewInvcMisc(amount, trackingNo);
-            }
-            arInvoice.AddTrackingToInvcHead(tbPackNo.Text,trackingNo);
-            int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
-            processedInvoices += "Invoiced Now " + InvoiceNo.ToString();
-            processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
-            WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
-            nextRecord();
-        }
         void WriteTrackingToPack(PackSlipInfo info)
         {
             string trackingNo = ship.GetTrackingNumbers();
@@ -294,9 +271,7 @@ namespace ShipScrn
             int packNum = ship.GetPackSlipNo();
             PackSlipInfo info = new PackSlipInfo(session, packNum);
             // this.setARBatch(info);
-
-            this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnTrackOnly.BackColor = System.Drawing.SystemColors.ButtonFace;
+            
             // if (info.NeedsTracking)
             if (true)   // for code testing only
             {
@@ -304,32 +279,24 @@ namespace ShipScrn
             }
             if (info.Invoiced)
             {
-                btnInvoice.Enabled = false;
                 lblInvoiceStatus.Text = "Already Invoiced";
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Red;
-                this.btnInvoice.BackColor = System.Drawing.Color.Black;
                 // nextRecord();
             }
             else
             {
-                btnInvoice.Enabled = true;
                 lblInvoiceStatus.Text = "Ready to Invoice";
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Black;
-                this.btnInvoice.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
             if (info.CustomerFF)
             {
-                btnInvoice.Enabled = false;
                 lblInvoiceStatus.Text = "Customer Freight Free";
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Red;
-                this.btnInvoice.BackColor = System.Drawing.Color.Black;
             }
             if (info.OrderFF)
             {
-                btnInvoice.Enabled = false;
                 lblInvoiceStatus.Text = "Order Freight Free";
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Red;
-                this.btnInvoice.BackColor = System.Drawing.Color.Black;
             }
         }
         void setScreenVars(Shipment ship)
@@ -403,27 +370,6 @@ namespace ShipScrn
                 setScreenVars((Shipment)iter.Value);
             }
         }
-
-        void processFedExFile()
-        {
-            FedExWriteBackReader reader = new FedExWriteBackReader(filename);
-            ShipMgr fedExData = reader.GetShipMgr();
-            fedExData.TotalShipments();
-            stats.TotalFreightFile = fedExData.TotalFreight;
-            stats.TotalWeightFile = fedExData.TotalWeight;
-            stats.NPacksFile = fedExData.Packs;
-            stats.NTrackingNumbersFile = fedExData.TrackingNumbers;
-
-            shipments = fedExData.GetShipmentsHash();
-            ShipKeys = shipments.Keys;
-            iter = shipments.GetEnumerator();
-            moreRecords = iter.MoveNext();
-            setScreenVars((Shipment)iter.Value);
-        }
-        void tbPackNo_LostFocus(object sender, EventArgs e)
-        {
-            
-        }
         void setScreenShipTo()
         {
             string packNoStr = tbPackNo.Text;
@@ -443,8 +389,6 @@ namespace ShipScrn
             {
                 lblInvoiceStatus.Text = "FedEx Pack not Found in Vantage";
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Red;
-                this.btnInvoice.BackColor = System.Drawing.Color.Black;
-                this.btnTrackOnly.BackColor = System.Drawing.Color.Black;
             }
         }
         void determineFFstatus()
@@ -453,10 +397,8 @@ namespace ShipScrn
             if (frtTerms.Equals("FF", StringComparison.Ordinal))
             {
                 cbFreightFreeCust.Checked = true;
-                btnInvoice.Enabled = false;
                 lblInvoiceStatus.Text = "Customer Freight Free";
                 this.lblInvoiceStatus.ForeColor = System.Drawing.Color.Red;
-                this.btnInvoice.BackColor = System.Drawing.Color.Black;
             }
         }
         void btnLogin_Click(object sender, EventArgs e)

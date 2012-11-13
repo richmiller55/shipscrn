@@ -8,15 +8,14 @@ namespace ShipScrn
         int nPacksFile;
         int nTrackingNumbersFile;
         int nPacksProcessed;
-        int nPacksSkipped;
         int nPacksInvoiced;
-        int nPacksTrackOnly;
+        
         int nTrackingNumbersProcessed;
         decimal totalFreightFile;
         decimal totalWeightFile;
-        decimal totalHandlingBilled;
+        
         decimal totalFreightBilled;
-        decimal totalWeightProcessed;
+        
 
         public AppStats()
         {
@@ -27,15 +26,13 @@ namespace ShipScrn
             nPacksFile = 0;
             nTrackingNumbersFile = 0;
             nPacksProcessed = 0;
-            nPacksSkipped = 0;
             nPacksInvoiced = 0;
-            nPacksTrackOnly = 0;
             nTrackingNumbersProcessed = 0;
             totalFreightFile = 0.0m;
             totalWeightFile = 0.0m;
-            totalHandlingBilled = 0.0m;
+            
             totalFreightBilled = 0.0m;
-            totalWeightProcessed = 0.0m;
+            
         }
         public int NPacksFile
         {

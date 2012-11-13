@@ -17,8 +17,8 @@ namespace ShipScrn
         string shipToAddress1;
         string shipToAddress2;
         string shipToCity;
-        string shipToState;
-        string shipToPostalCode;
+        
+        
         string shipToCountry;
         string customerId;
         string custFrtTerms;
@@ -173,7 +173,6 @@ namespace ShipScrn
             session = new Epicor.Mfg.Core.Session("rich", "homefed55", "AppServerDC://VantageDB1:8301", Epicor.Mfg.Core.Session.LicenseType.Default);
             customerObj = new Epicor.Mfg.BO.Customer(session.ConnectionPool);
             string message = "OK";
-            bool okFound = true;
             try
             {
                 custDs = customerObj.GetByID(this.CustomerNo);
@@ -183,7 +182,6 @@ namespace ShipScrn
             catch (Exception e)
             {
                 message = e.Message;
-                okFound = false;
             }
         }
     }

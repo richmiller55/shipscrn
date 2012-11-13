@@ -18,11 +18,11 @@ namespace ShipScrn
         bool orderFF;
        
         bool packFound;
-        bool orderFound;
         bool packNeedsTracking;
         bool isBuyGroup;
         string orderShipVia;
         string customerTerms;
+        string customerState;
         bool customerFF;
         bool isUPS;
         string newInvoices = string.Empty;
@@ -32,6 +32,7 @@ namespace ShipScrn
             packNum = pack;
             session = vanSession;
             orderFF = false;
+            customerState = "";
             packNeedsTracking = true;
             orderShipVia = "";
             
@@ -118,7 +119,6 @@ namespace ShipScrn
         }
         public void PostTrackingToPack(string trackingStr, decimal weight, Shipment ship)
         {
-            bool result = true;
             string message;
             try
             {
@@ -127,7 +127,6 @@ namespace ShipScrn
                 custShipRow.Weight = weight;
                 string[] trackingSplit = trackingStr.Split(':');
                 this.PostDetailTrackingNumbers(trackingSplit, ship);
-
                 string tracking = trackingSplit[0];
                 if (tracking.Length > 50)
                 {
@@ -153,14 +152,12 @@ namespace ShipScrn
                 {
                     // tracking no did not post
                     message = e.Message;
-                    result = false;
                 }
             }
             catch (Exception e)
             {
                 // tracking no did not post
                 message = e.Message;
-                result = false;
             }
         }
         void GetOrderInfo()
@@ -189,7 +186,6 @@ namespace ShipScrn
                     {
                         OrderFF = true;
                     }
-                    orderFound = true;
                 }
                 reader.Close();
             }
@@ -199,13 +195,13 @@ namespace ShipScrn
             string baseQuery = @" 
              SELECT 
 	           cm.CustNum as CustNum,
-               cm.FreightTerms as FreightTerms
+               cm.FreightTerms as FreightTerms,
+               cm.State as state
                FROM Customer as cm ";
           StringBuilder querystring = new StringBuilder();
           querystring.Append(baseQuery);
           querystring.AppendLine(" where CustNum = " + CustNum.ToString());
           string Dsn = GetMySqlDsn();
-          ArrayList al;
           using (OdbcConnection connection = new OdbcConnection(Dsn))
             {
               OdbcCommand command = new OdbcCommand(querystring.ToString(), connection);
@@ -215,7 +211,6 @@ namespace ShipScrn
                 {
 
                     customerTerms = reader["FreightTerms"].ToString();
-
                     if (customerTerms.CompareTo("FF") == 0)
                     {
                         CustomerFF = true;
@@ -242,7 +237,7 @@ namespace ShipScrn
             Epicor.Mfg.BO.SalesOrder salesOrderObj;
             salesOrderObj = new Epicor.Mfg.BO.SalesOrder(session.ConnectionPool);
             Epicor.Mfg.BO.SalesOrderDataSet soDs = new Epicor.Mfg.BO.SalesOrderDataSet();
-            bool result = true;
+            
             string message;
             try
             {
@@ -256,11 +251,6 @@ namespace ShipScrn
             {
                 // header did not post
                 message = e.Message;
-                result = false;
-            }
-            if (result)
-            {
-                orderFound = true;
             }
         }
         public bool NeedsTracking
@@ -324,6 +314,24 @@ namespace ShipScrn
                 orderFF = value;
             }
         }
+        public bool IsFreightTaxed()
+        {
+            bool freightTaxed = false;
+            if (CustomerState.Equals("TX")) freightTaxed = true;
+            return freightTaxed;
+        }
+        public string CustomerState
+        {
+            get
+            {
+                return customerState;
+            }
+            set
+            {
+                customerState = value;
+            }
+        }
+
         public int PackNum
         {
             get

@@ -53,7 +53,7 @@ namespace ShipScrn
         void initArBatchNames()
         {
 
-            string baseDate = "112912";
+            string baseDate = "120612";
             this.ARNoBg = "P" + baseDate + "1";
             this.ARBg = "P" + baseDate + "2";
             this.ARNoBg2 = "P" + baseDate + "3";

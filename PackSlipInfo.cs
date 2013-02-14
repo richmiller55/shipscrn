@@ -16,10 +16,11 @@ namespace ShipScrn
         int CustNum;
         int OrderNum;
         bool orderFF;
-       
+        bool shipToLocation;
         bool packFound;
         bool packNeedsTracking;
         bool isBuyGroup;
+        bool invoiceInABox;
         string orderShipVia;
         string customerTerms;
         string customerState;
@@ -35,8 +36,9 @@ namespace ShipScrn
             customerState = "";
             packNeedsTracking = true;
             orderShipVia = "";
-            
+            shipToLocation = false;
             customerFF = false;
+            invoiceInABox = true;
             InitCustShip();
             if (packFound)
             {
@@ -166,7 +168,8 @@ namespace ShipScrn
              SELECT 
 	        oh.OrderNum as OrderNum,
                 oh.freightFree as freightFree,
-                oh.ShipViaCode as ShipViaCode
+                oh.ShipViaCode as ShipViaCode,
+                oh.ShipToNum as ShipToNum
                 FROM orderHed as oh ";
           StringBuilder querystring = new StringBuilder();
           querystring.Append(baseQuery);
@@ -186,6 +189,18 @@ namespace ShipScrn
                     {
                         OrderFF = true;
                     }
+                    string shiptoNum = reader["ShipToNum"].ToString();
+                    if (reader["ShipToNum"].Equals("1")) {
+                        ShipToLocation = false;
+                    }
+                    else if (reader["ShipToNum"].Equals(""))
+                    {
+                        ShipToLocation = false;
+                    }
+                    else
+                    {
+                        ShipToLocation = true;
+                    }
                 }
                 reader.Close();
             }
@@ -196,7 +211,8 @@ namespace ShipScrn
              SELECT 
 	           cm.CustNum as CustNum,
                cm.FreightTerms as FreightTerms,
-               cm.State as state
+               cm.State as state,
+               cm.InvoiceInABox as InvoiceInABox
                FROM Customer as cm ";
           StringBuilder querystring = new StringBuilder();
           querystring.Append(baseQuery);
@@ -209,6 +225,7 @@ namespace ShipScrn
                 OdbcDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
+                    if (reader["InvoiceInABox"].Equals(0)) InvoiceInABox = false;
 
                     customerTerms = reader["FreightTerms"].ToString();
                     if (customerTerms.CompareTo("FF") == 0)
@@ -295,6 +312,28 @@ namespace ShipScrn
             set
             {
                 invoiced = value;
+            }
+        }
+        public bool ShipToLocation
+        {
+            get
+            {
+                return shipToLocation;
+            }
+            set
+            {
+                shipToLocation = value;
+            }
+        }
+        public bool InvoiceInABox
+        {
+            get
+            {
+                return invoiceInABox;
+            }
+            set
+            {
+                invoiceInABox = value;
             }
         }
         public bool IsPackFF()

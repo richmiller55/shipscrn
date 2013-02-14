@@ -28,7 +28,7 @@ namespace ShipScrn
         string arBg;
         string arNoBg2;
         string arBg2;
-
+        string ShipTo1,ShipTo2;
         string U1, U2, U3, U4;
         string currentUPSBatch;
         bool moreRecords;
@@ -38,32 +38,36 @@ namespace ShipScrn
         {
             InitializeComponent();
             crlf = "\r\n";
-            this.initArBatchNames();
+            
             filename = string.Empty;
             InvoicePacks = new Hashtable();
             this.stats = new AppStats();
             setupDataTable();
             moreRecords = true;
             btnLogin.Click += new EventHandler(btnLogin_Click);
-            
             btnRunTillChange.Click += new EventHandler(btnRunTillChange_Click);
             btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
             btnRunTrackTable.Click += new EventHandler(btnRunTrackTable_Click);
         }
         void initArBatchNames()
         {
-
-            string baseDate = "120612";
+            string baseDate = "021313";
             this.ARNoBg = "P" + baseDate + "1";
             this.ARBg = "P" + baseDate + "2";
             this.ARNoBg2 = "P" + baseDate + "3";
             this.ARBg2 = "P" + baseDate + "4";
-
+            this.ShipTo1 = "S" + baseDate + "1";
+            this.ShipTo2 = "S" + baseDate + "2";
             this.U1 = "U" + baseDate + "1"; 
             this.U2 = "U" + baseDate + "2";
             this.U3 = "U" + baseDate + "3";
             this.U4 = "U" + baseDate + "4";
+            this.ARBatchName = this.ARNoBg;
             this.currentUPSBatch = this.U1;
+            this.CreateARBatch(this.ARNoBg.ToString());
+            this.CreateARBatch(this.ARBg.ToString());
+            this.CreateARBatch(this.ShipTo1.ToString());
+            this.CreateARBatch(this.U1.ToString());
         }
         void btnRunTillDone_Click(object sender, EventArgs e)
         {
@@ -81,12 +85,14 @@ namespace ShipScrn
             batchCount.Add("buyGroup",0);
             batchCount.Add("notBuyingGroup",0);
             batchCount.Add("UPS", 0);
+            batchCount.Add("ShipTo", 0);
             return batchCount;
         }
         void btnRunTillChange_Click(object sender, EventArgs e)
         {
             moreRecords = true;
-            Hashtable batchCount = InitBatchCount();    
+            Hashtable batchCount = InitBatchCount();
+            this.initArBatchNames();
             while (moreRecords)
             {
                 try
@@ -215,8 +221,46 @@ namespace ShipScrn
         }
         void saveArBatchTextBoxValues()
         {
-            this.ARBg = this.tbBGBatch.Text;
-            this.ARNoBg = this.tbARBatch.Text;
+            // this.ARBg = this.tbBGBatch.Text;
+            // this.ARNoBg = this.tbARBatch.Text;
+        }
+        void CreateARBatch(string batchName)
+        {
+            //
+        }
+        void CreateARBatchOld(string batchName)
+        {
+            Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
+            Epicor.Mfg.BO.InvcGrp invcGrp = new Epicor.Mfg.BO.InvcGrp(session.ConnectionPool);
+            try
+            {
+                Epicor.Mfg.BO.InvcGrpDataSet ds = invcGrp.GetByID(batchName);
+                invcGrp.DeleteByID(batchName);
+                invcGrp.Update(ds);
+            }
+                /*
+            catch ( e)
+            {
+                string message = e.Message;
+                lblInvoiceStatus.Text = "No Packs left to invoice:";
+                allOK = false;
+            } */
+
+            catch (Exception e)
+            {
+                Epicor.Mfg.BO.InvcGrpDataSet ds = new Epicor.Mfg.BO.InvcGrpDataSet();
+                // row.GroupID = batchName;
+                invcGrp.GetNewInvcGrp(ds);
+                Epicor.Mfg.BO.InvcGrpDataSet.InvcGrpRow row =
+                    (Epicor.Mfg.BO.InvcGrpDataSet.InvcGrpRow)ds.InvcGrp.Rows[0];
+                row.Company = "CA";
+                row.GroupID = batchName;
+                row.FiscalPeriod = 12;
+                row.CreatedBy = "rich";
+                row.FiscalYear = 2012;
+                invcGrp.Update(ds);
+                invcGrp.UnlockGroup(batchName, ds);
+            }
         }
         void setARBatch(PackSlipInfo info,Hashtable batchCounts)
         {
@@ -233,9 +277,11 @@ namespace ShipScrn
                 if ((int)batchCounts["UPS"] >= 50)
                 {
                     this.currentUPSBatch = this.U2;
+                    this.CreateARBatch(this.U2.ToString());
                 }
                 else if ((int)batchCounts["UPS"] >= 100)
                 {
+                    this.CreateARBatch(this.U3.ToString());
                     this.currentUPSBatch = this.U3;
                 }
                 else if ((int)batchCounts["UPS"] >= 150)
@@ -248,7 +294,7 @@ namespace ShipScrn
                 setARBatchIfBuyGrp(info,batchCounts);
             }
         }
-        void setARBatchIfBuyGrp(PackSlipInfo info,Hashtable batchCounts)
+        void setARBatchIfBuyGrp(PackSlipInfo info, Hashtable batchCounts)
         {
             if (info.IsBuyGroup)
             {
@@ -256,7 +302,23 @@ namespace ShipScrn
                 buyGroupCount += 1;
                 batchCounts["buyGroup"] = buyGroupCount;
                 this.ARBatchName = this.ARBg;
-                if ((int)batchCounts["buyGroup"] > 50) this.ARBg = this.ARBg2;
+                if ((int)batchCounts["buyGroup"] > 50)
+                {
+                    this.ARBg = this.ARBg2;
+                    this.CreateARBatch(this.ARBg2.ToString());
+                }
+            }
+            else if (info.ShipToLocation || !info.InvoiceInABox)
+            {
+                if ((int)batchCounts["ShipTo"] > 50)
+                {
+                    this.ShipTo1 = this.ShipTo2;
+                    this.CreateARBatch(this.ShipTo2.ToString());
+                }
+                int shipToCount = (int)batchCounts["ShipTo"];
+                shipToCount += 1;
+                batchCounts["ShipTo"] = shipToCount;
+                this.ARBatchName = this.ShipTo1;
             }
             else
             {
@@ -264,9 +326,14 @@ namespace ShipScrn
                 int notBuyGroupCount = (int)batchCounts["notBuyingGroup"];
                 notBuyGroupCount += 1;
                 batchCounts["notBuyingGroup"] = notBuyGroupCount;
-                if ((int)batchCounts["notBuyingGroup"] > 50) this.ARNoBg = this.ARNoBg2;
+                if ((int)batchCounts["notBuyingGroup"] > 50)
+                {
+                    this.ARNoBg = this.ARNoBg2;
+                    this.CreateARBatch(this.ARNoBg2.ToString());
+                }
             }
         }
+         
         void setPackNumInfo()
         {
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();

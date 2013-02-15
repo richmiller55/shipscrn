@@ -225,7 +225,8 @@ namespace ShipScrn
                 OdbcDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    if (reader["InvoiceInABox"].Equals(0)) InvoiceInABox = false;
+                    string invoiceBoxFlag =  reader["InvoiceInABox"].ToString();
+                    if (invoiceBoxFlag.Equals("0")) InvoiceInABox = false;
 
                     customerTerms = reader["FreightTerms"].ToString();
                     if (customerTerms.CompareTo("FF") == 0)

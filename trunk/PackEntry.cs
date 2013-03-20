@@ -51,7 +51,7 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            string baseDate = "021413";
+            string baseDate = "031913";
             this.ARNoBg = "P" + baseDate + "1";
             this.ARBg = "P" + baseDate + "2";
             this.ARNoBg2 = "P" + baseDate + "3";
@@ -334,7 +334,6 @@ namespace ShipScrn
                 }
             }
         }
-         
         void setPackNumInfo()
         {
             Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
@@ -539,6 +538,5 @@ namespace ShipScrn
                 arNoBg2 = value;
             }
         }
-
     }
 }

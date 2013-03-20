@@ -80,7 +80,6 @@ namespace ShipScrn
             return myReader;
         }
         public ShipMgr GetShipMgr() { return shipMgr; }
-
         private string GetTodaysDateStr()
         {
             string year = DateTime.Now.Year.ToString();

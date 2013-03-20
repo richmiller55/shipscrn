@@ -371,7 +371,6 @@ namespace ShipScrn
                 customerState = value;
             }
         }
-
         public int PackNum
         {
             get
@@ -409,7 +408,6 @@ namespace ShipScrn
         {
             return "DSN=GC; HOST=gc.rlm5.com; DB=coinet_db1; UID=focus; PWD=focusgroup";
         }
-
     }
 }
         

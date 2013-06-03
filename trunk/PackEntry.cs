@@ -28,7 +28,11 @@ namespace ShipScrn
         string arBg;
         string arNoBg2;
         string arBg2;
-        string ShipTo1,ShipTo2;
+        string arNoBg3;
+        string arBg3;
+        string arNoBg4;
+        string arBg4;
+        string ShipTo1, ShipTo2;
         string U1, U2, U3, U4;
         string currentUPSBatch;
         bool moreRecords;
@@ -51,11 +55,16 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            string baseDate = "032213";
+            string baseDate = "060313";
             this.ARNoBg = "P" + baseDate + "1";
             this.ARBg = "P" + baseDate + "2";
-            this.ARNoBg2 = "P" + baseDate + "3";
-            this.ARBg2 = "P" + baseDate + "4";
+            this.arNoBg2 = "P" + baseDate + "3";
+            this.arBg2 = "P" + baseDate + "4";
+            this.arNoBg3 = "P" + baseDate + "5";
+            this.arBg3 = "P" + baseDate + "6";
+            this.arNoBg4 = "P" + baseDate + "7";
+            this.arBg4 = "P" + baseDate + "8";
+
             this.ShipTo1 = "S" + baseDate + "1";
             this.ShipTo2 = "S" + baseDate + "2";
             this.U1 = "U" + baseDate + "1"; 
@@ -95,54 +104,59 @@ namespace ShipScrn
             this.initArBatchNames();
             while (moreRecords)
             {
-                try
-                {
-                    this.ship = (Shipment)iter.Value;
-                }
-                catch (Exception e2)
-                {
-                    string message = e2.Message;
-                    this.Refresh();
-                }
-                Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
-                int PackSlipNo = ship.GetPackSlipNo();
-                PackSlipInfo info = new PackSlipInfo(session, PackSlipNo);
-                if (info.Invoiced)
-                {
-                    moreRecords = iter.MoveNext();
-                    continue;
-                }
-                this.setARBatch(info, batchCount);
-
-                setScreenVars((Shipment)iter.Value);
-                this.Refresh();
-                this.saveArBatchTextBoxValues();
-                string freightMessage = "Frt Free";
-                ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
-                string trackingNo = ship.GetTrackingNumbers();
-                if (!info.IsPackFF() && ship.GetTotalCharge().CompareTo(0.0M) > 0)
-                {
-                    string frtMiscCode = "1";
-                    string taxCodeID = "FREIGHT";
-                    if (info.IsFreightTaxed())
-                    {
-                        frtMiscCode = "2";
-                        taxCodeID = "PRODFRT";
-                    }
-                    decimal amount = ship.GetTotalCharge() + this.handlingCharge;
-                    arInvoice.GetNewInvcMisc(amount, 
-                            trackingNo, 
-                            frtMiscCode,
-                            taxCodeID);
-                    freightMessage = "Bill Frt";
-                }
-                arInvoice.AddTrackingToInvcHead(PackSlipNo.ToString(), trackingNo);
-                int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
-                processedInvoices += freightMessage + InvoiceNo.ToString();
-                processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
-                WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
                 moreRecords = iter.MoveNext();
+                processRecord(batchCount);
             }
+        }
+        void processRecord(Hashtable batchCount)
+        {
+            try
+            {
+                this.ship = (Shipment)iter.Value;
+            }
+            catch (Exception e2)
+            {
+                string message = e2.Message;
+                this.Refresh();
+            }
+            Epicor.Mfg.Core.Session session = this.vanAccess.getSession();
+            int PackSlipNo = ship.GetPackSlipNo();
+
+            PackSlipInfo info = new PackSlipInfo(session, PackSlipNo);
+            if (info.Invoiced)
+            {
+                moreRecords = iter.MoveNext();
+                return;
+            }
+            this.setARBatch(info, batchCount);
+
+            setScreenVars((Shipment)iter.Value);
+            this.Refresh();
+            this.saveArBatchTextBoxValues();
+            string freightMessage = "Frt Free";
+            ARInvoice arInvoice = new ARInvoice(session, this.ARBatchName, PackSlipNo.ToString());
+            string trackingNo = ship.GetTrackingNumbers();
+            if (!info.IsPackFF() && ship.GetTotalCharge().CompareTo(0.0M) > 0)
+            {
+                string frtMiscCode = "1";
+                string taxCodeID = "FREIGHT";
+                if (info.IsFreightTaxed())
+                {
+                    frtMiscCode = "2";
+                    taxCodeID = "PRODFRT";
+                }
+                decimal amount = ship.GetTotalCharge() + this.handlingCharge;
+                arInvoice.GetNewInvcMisc(amount,
+                        trackingNo,
+                        frtMiscCode,
+                        taxCodeID);
+                freightMessage = "Bill Frt";
+            }
+            arInvoice.AddTrackingToInvcHead(PackSlipNo.ToString(), trackingNo);
+            int InvoiceNo = arInvoice.GetInvoiceFromPack(PackSlipNo.ToString());
+            processedInvoices += freightMessage + InvoiceNo.ToString();
+            processedInvoices += " Pack " + PackSlipNo.ToString() + crlf;
+            WriteBackTracking wb = new WriteBackTracking(PackSlipNo);
         }
         void setTrackingGrid()
         {
@@ -302,10 +316,17 @@ namespace ShipScrn
                 buyGroupCount += 1;
                 batchCounts["buyGroup"] = buyGroupCount;
                 this.ARBatchName = this.ARBg;
-                if ((int)batchCounts["buyGroup"] > 50)
+                if ((int)batchCounts["buyGroup"] > 150)
+                {
+                    this.ARBg = this.ARBg4;
+                }
+                else if ((int)batchCounts["buyGroup"] > 100)
+                {
+                    this.ARBg = this.ARBg3;
+                }
+                else if ((int)batchCounts["buyGroup"] > 50)
                 {
                     this.ARBg = this.ARBg2;
-                    this.CreateARBatch(this.ARBg2.ToString());
                 }
             }
 
@@ -327,10 +348,17 @@ namespace ShipScrn
                 int notBuyGroupCount = (int)batchCounts["notBuyingGroup"];
                 notBuyGroupCount += 1;
                 batchCounts["notBuyingGroup"] = notBuyGroupCount;
-                if ((int)batchCounts["notBuyingGroup"] > 50)
+                if ((int)batchCounts["notBuyingGroup"] > 150)
+                {
+                    this.ARNoBg = this.ARNoBg4;
+                }
+                else if ((int)batchCounts["notBuyingGroup"] > 100)
+                {
+                    this.ARNoBg = this.ARNoBg3;
+                }
+                else if ((int)batchCounts["notBuyingGroup"] > 50)
                 {
                     this.ARNoBg = this.ARNoBg2;
-                    this.CreateARBatch(this.ARNoBg2.ToString());
                 }
             }
         }
@@ -538,5 +566,50 @@ namespace ShipScrn
                 arNoBg2 = value;
             }
         }
+        public string ARBg3
+        {
+            get
+            {
+                return arBg3;
+            }
+            set
+            {
+                arBg3 = value;
+            }
+        }
+        public string ARNoBg3
+        {
+            get
+            {
+                return arNoBg3;
+            }
+            set
+            {
+                arNoBg3 = value;
+            }
+        }
+        public string ARBg4
+        {
+            get
+            {
+                return arBg4;
+            }
+            set
+            {
+                arBg4 = value;
+            }
+        }
+        public string ARNoBg4
+        {
+            get
+            {
+                return arNoBg4;
+            }
+            set
+            {
+                arNoBg4 = value;
+            }
+        }
+
     }
 }

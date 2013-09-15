@@ -88,6 +88,7 @@ namespace ShipScrn
             if (month.Length == 1) { month = "0" + month; }
             if (day.Length == 1) { day = "0" + day; }
             string yyyymmdd = year + month + day;
+            // yyyymmdd = "20130913";
             return yyyymmdd;
         }
         public System.DateTime ConvertStrToDate(string dateStr)
@@ -121,8 +122,20 @@ namespace ShipScrn
                     System.DateTime shipDate = ConvertStrToDate(shipDate_s);
                     string serviceClass = reader.GetString((int)trackDb.serviceClass);
                     string orderNo_s = reader.GetString((int)trackDb.orderNo);
+
                     if (orderNo_s.Equals("")) orderNo_s = "0";
-                    int orderNo = System.Convert.ToInt32(orderNo_s);
+                    int orderNo = 0;
+                    try
+                    {
+                        orderNo = System.Convert.ToInt32(orderNo_s);
+                    }
+                    catch (Exception e)
+                    {
+                        string reason = e.Message;
+                        thingsToRead = reader.Read();
+                        continue;
+                    }
+                    
                     decimal weight = reader.GetDecimal((int)trackDb.weight);
                     decimal charge = reader.GetDecimal((int)trackDb.charge);
                     string deleted = reader.GetString((int)trackDb.deleted);

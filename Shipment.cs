@@ -25,6 +25,8 @@ namespace ShipScrn
 	        packSlipNo = pack;
             weights = new Hashtable();
             charges = new Hashtable();
+            
+            TimeSpan ts = new TimeSpan(1, 0, 0, 0);
             shipDate = new System.DateTime();
 		    // boxCount = 0;
 	    }

@@ -55,23 +55,29 @@ namespace ShipScrn
         }
         void initArBatchNames()
         {
-            // string baseDate = "080113";
-            string baseDate = "";
-            this.ARNoBg = "P" + baseDate + "1";
-            this.ARBg = "P" + baseDate + "2";
-            this.arNoBg2 = "P" + baseDate + "3";
-            this.arBg2 = "P" + baseDate + "4";
-            this.arNoBg3 = "P" + baseDate + "5";
-            this.arBg3 = "P" + baseDate + "6";
-            this.arNoBg4 = "P" + baseDate + "7";
-            this.arBg4 = "P" + baseDate + "8";
-
-            this.ShipTo1 = "S" + baseDate + "1";
-            this.ShipTo2 = "S" + baseDate + "2";
-            this.U1 = "U" + baseDate + "1"; 
-            this.U2 = "U" + baseDate + "2";
-            this.U3 = "U" + baseDate + "3";
-            this.U4 = "U" + baseDate + "4";
+            string basePrefix = "Q";
+            // string basePrefix = "W";
+            this.ARNoBg = basePrefix + "1";
+            this.ARBg = basePrefix + "2";
+            this.arNoBg2 = basePrefix + "3";
+            this.arBg2 = basePrefix +  "4";
+            this.arNoBg3 = basePrefix + "5";
+            this.arBg3 = basePrefix +  "6";
+            this.arNoBg4 = basePrefix + "7";
+            this.arBg4 = basePrefix +  "8";
+            // print invoices
+            string printPrefix = "S";
+            // string printPrefix = "X";
+            this.ShipTo1 = printPrefix + "1";
+            this.ShipTo2 = printPrefix + "2";
+            // lux group
+            //string luxPrefix = "U";
+            string luxPrefix = "L";
+            // string luxPrefix = "Y";
+            this.U1 = luxPrefix + "1";
+            this.U2 = luxPrefix + "2";
+            this.U3 = luxPrefix + "3";
+            this.U4 = luxPrefix + "4";
             this.ARBatchName = this.ARNoBg;
             this.currentUPSBatch = this.U1;
             this.CreateARBatch(this.ARNoBg.ToString());

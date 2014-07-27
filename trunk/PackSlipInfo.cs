@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.Data.Odbc;
+using System.Windows.Forms;
 
 namespace ShipScrn
 {
+
     class PackSlipInfo
     {
         Epicor.Mfg.Core.Session session;
@@ -179,7 +181,22 @@ namespace ShipScrn
           using (OdbcConnection connection = new OdbcConnection(Dsn))
             {
                 OdbcCommand command = new OdbcCommand(querystring.ToString(), connection);
-                connection.Open();
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception e)
+                {
+
+
+                    string message = e.Message;
+                    
+                    MessageBox.Show(message.ToString() + OrderNum.ToString(),
+                    "internet connection issue",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
+                }
                 OdbcDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -404,7 +421,7 @@ namespace ShipScrn
                 isBuyGroup = value;
             }
         }
-        private string GetMySqlDsn()
+        public string GetMySqlDsn()
         {
             return "DSN=GC; HOST=gc.rlm5.com; DB=coinet_db1; UID=focus; PWD=focusgroup";
         }

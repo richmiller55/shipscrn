@@ -78,6 +78,11 @@ namespace ShipScrn
             this.tbBGBatch = new System.Windows.Forms.TextBox();
             this.lbBGBatch = new System.Windows.Forms.Label();
             this.gbArBatches = new System.Windows.Forms.GroupBox();
+            this.btnBatchCheck = new System.Windows.Forms.Button();
+            this.cbMainBatchPrefix = new System.Windows.Forms.ComboBox();
+            this.cbPrintPrefix = new System.Windows.Forms.ComboBox();
+            this.cbLuxPrefix = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.gbShipAdr.SuspendLayout();
             this.gbTrackingNos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracking)).BeginInit();
@@ -350,7 +355,7 @@ namespace ShipScrn
             // 
             // tbARBatch
             // 
-            this.tbARBatch.Location = new System.Drawing.Point(162, 18);
+            this.tbARBatch.Location = new System.Drawing.Point(403, 350);
             this.tbARBatch.Name = "tbARBatch";
             this.tbARBatch.Size = new System.Drawing.Size(100, 20);
             this.tbARBatch.TabIndex = 27;
@@ -368,14 +373,15 @@ namespace ShipScrn
             // lbInvoiceGroup
             // 
             this.lbInvoiceGroup.AutoSize = true;
-            this.lbInvoiceGroup.Location = new System.Drawing.Point(56, 21);
+            this.lbInvoiceGroup.Location = new System.Drawing.Point(15, 21);
             this.lbInvoiceGroup.Name = "lbInvoiceGroup";
-            this.lbInvoiceGroup.Size = new System.Drawing.Size(77, 13);
+            this.lbInvoiceGroup.Size = new System.Drawing.Size(59, 13);
             this.lbInvoiceGroup.TabIndex = 30;
-            this.lbInvoiceGroup.Text = "Not Buy Group";
+            this.lbInvoiceGroup.Text = "Main Prefix";
             // 
             // grpAction
             // 
+            this.grpAction.Controls.Add(this.btnBatchCheck);
             this.grpAction.Controls.Add(this.btnRunTrackTable);
             this.grpAction.Controls.Add(this.btnRunTillDone);
             this.grpAction.Controls.Add(this.btnRunTillChange);
@@ -388,7 +394,7 @@ namespace ShipScrn
             // 
             // btnRunTrackTable
             // 
-            this.btnRunTrackTable.Location = new System.Drawing.Point(6, 54);
+            this.btnRunTrackTable.Location = new System.Drawing.Point(6, 83);
             this.btnRunTrackTable.Name = "btnRunTrackTable";
             this.btnRunTrackTable.Size = new System.Drawing.Size(126, 23);
             this.btnRunTrackTable.TabIndex = 28;
@@ -406,7 +412,7 @@ namespace ShipScrn
             // 
             // btnRunTillChange
             // 
-            this.btnRunTillChange.Location = new System.Drawing.Point(6, 83);
+            this.btnRunTillChange.Location = new System.Drawing.Point(6, 113);
             this.btnRunTillChange.Name = "btnRunTillChange";
             this.btnRunTillChange.Size = new System.Drawing.Size(126, 23);
             this.btnRunTillChange.TabIndex = 26;
@@ -449,7 +455,7 @@ namespace ShipScrn
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tbProcessedInvoices);
-            this.groupBox2.Location = new System.Drawing.Point(541, 215);
+            this.groupBox2.Location = new System.Drawing.Point(541, 252);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(303, 327);
             this.groupBox2.TabIndex = 33;
@@ -464,7 +470,7 @@ namespace ShipScrn
             this.gbStatistics.Controls.Add(this.tbNpacksProcessed);
             this.gbStatistics.Controls.Add(this.tbNtrackingNumFile);
             this.gbStatistics.Controls.Add(this.tbNpacksFile);
-            this.gbStatistics.Location = new System.Drawing.Point(541, 100);
+            this.gbStatistics.Location = new System.Drawing.Point(541, 138);
             this.gbStatistics.Name = "gbStatistics";
             this.gbStatistics.Size = new System.Drawing.Size(302, 110);
             this.gbStatistics.TabIndex = 34;
@@ -519,7 +525,7 @@ namespace ShipScrn
             // 
             // tbBGBatch
             // 
-            this.tbBGBatch.Location = new System.Drawing.Point(162, 50);
+            this.tbBGBatch.Location = new System.Drawing.Point(403, 305);
             this.tbBGBatch.Name = "tbBGBatch";
             this.tbBGBatch.Size = new System.Drawing.Size(100, 20);
             this.tbBGBatch.TabIndex = 35;
@@ -527,24 +533,77 @@ namespace ShipScrn
             // lbBGBatch
             // 
             this.lbBGBatch.AutoSize = true;
-            this.lbBGBatch.Location = new System.Drawing.Point(57, 53);
+            this.lbBGBatch.Location = new System.Drawing.Point(16, 43);
             this.lbBGBatch.Name = "lbBGBatch";
-            this.lbBGBatch.Size = new System.Drawing.Size(76, 13);
+            this.lbBGBatch.Size = new System.Drawing.Size(57, 13);
             this.lbBGBatch.TabIndex = 36;
-            this.lbBGBatch.Text = "Buying Groups";
+            this.lbBGBatch.Text = "Print Prefix";
             // 
             // gbArBatches
             // 
-            this.gbArBatches.Controls.Add(this.tbARBatch);
+            this.gbArBatches.Controls.Add(this.label1);
+            this.gbArBatches.Controls.Add(this.cbLuxPrefix);
+            this.gbArBatches.Controls.Add(this.cbPrintPrefix);
+            this.gbArBatches.Controls.Add(this.cbMainBatchPrefix);
             this.gbArBatches.Controls.Add(this.lbBGBatch);
-            this.gbArBatches.Controls.Add(this.tbBGBatch);
             this.gbArBatches.Controls.Add(this.lbInvoiceGroup);
             this.gbArBatches.Location = new System.Drawing.Point(541, 13);
             this.gbArBatches.Name = "gbArBatches";
-            this.gbArBatches.Size = new System.Drawing.Size(302, 83);
+            this.gbArBatches.Size = new System.Drawing.Size(302, 119);
             this.gbArBatches.TabIndex = 37;
             this.gbArBatches.TabStop = false;
             this.gbArBatches.Text = "AR Batches";
+            // 
+            // btnBatchCheck
+            // 
+            this.btnBatchCheck.Location = new System.Drawing.Point(6, 52);
+            this.btnBatchCheck.Name = "btnBatchCheck";
+            this.btnBatchCheck.Size = new System.Drawing.Size(126, 22);
+            this.btnBatchCheck.TabIndex = 29;
+            this.btnBatchCheck.Text = "Batch Check";
+            this.btnBatchCheck.UseVisualStyleBackColor = true;
+            // 
+            // cbMainBatchPrefix
+            // 
+            this.cbMainBatchPrefix.FormattingEnabled = true;
+            this.cbMainBatchPrefix.Items.AddRange(new object[] {
+            "R",
+            "S"});
+            this.cbMainBatchPrefix.Location = new System.Drawing.Point(98, 13);
+            this.cbMainBatchPrefix.Name = "cbMainBatchPrefix";
+            this.cbMainBatchPrefix.Size = new System.Drawing.Size(83, 21);
+            this.cbMainBatchPrefix.TabIndex = 37;
+            // 
+            // cbPrintPrefix
+            // 
+            this.cbPrintPrefix.FormattingEnabled = true;
+            this.cbPrintPrefix.Items.AddRange(new object[] {
+            "S",
+            "X"});
+            this.cbPrintPrefix.Location = new System.Drawing.Point(98, 40);
+            this.cbPrintPrefix.Name = "cbPrintPrefix";
+            this.cbPrintPrefix.Size = new System.Drawing.Size(83, 21);
+            this.cbPrintPrefix.TabIndex = 38;
+            // 
+            // cbLuxPrefix
+            // 
+            this.cbLuxPrefix.FormattingEnabled = true;
+            this.cbLuxPrefix.Items.AddRange(new object[] {
+            "L",
+            "U"});
+            this.cbLuxPrefix.Location = new System.Drawing.Point(98, 67);
+            this.cbLuxPrefix.Name = "cbLuxPrefix";
+            this.cbLuxPrefix.Size = new System.Drawing.Size(83, 21);
+            this.cbLuxPrefix.TabIndex = 39;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 70);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.TabIndex = 40;
+            this.label1.Text = "Lux UPS Prefix";
             // 
             // PackEntry
             // 
@@ -552,8 +611,10 @@ namespace ShipScrn
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(859, 584);
             this.Controls.Add(this.gbArBatches);
+            this.Controls.Add(this.tbARBatch);
             this.Controls.Add(this.gbStatistics);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.tbBGBatch);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpAction);
             this.Controls.Add(this.gbTrackingNos);
@@ -575,6 +636,7 @@ namespace ShipScrn
             this.gbArBatches.ResumeLayout(false);
             this.gbArBatches.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -629,5 +691,10 @@ namespace ShipScrn
         private System.Windows.Forms.Button btnRunTillDone;
         private System.Windows.Forms.Button btnRunTillChange;
         private System.Windows.Forms.Button btnRunTrackTable;
+        private System.Windows.Forms.Button btnBatchCheck;
+        private System.Windows.Forms.ComboBox cbMainBatchPrefix;
+        private System.Windows.Forms.ComboBox cbPrintPrefix;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbLuxPrefix;
     }
 }

@@ -38,6 +38,10 @@ namespace ShipScrn
         bool moreRecords;
         string processedInvoices;
         decimal handlingCharge = 2.50M;
+        string basePrefix;
+        string printPrefix;
+        string luxPrefix;
+
         public PackEntry()
         {
             InitializeComponent();
@@ -50,13 +54,23 @@ namespace ShipScrn
             moreRecords = true;
             btnLogin.Click += new EventHandler(btnLogin_Click);
             btnRunTillChange.Click += new EventHandler(btnRunTillChange_Click);
+             
             btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
             btnRunTrackTable.Click += new EventHandler(btnRunTrackTable_Click);
+            btnBatchCheck.Click += new EventHandler(btnBatchCheck_Click);
+        }
+
+        void btnBatchCheck_Click(object sender, EventArgs e)
+        {
+            this.basePrefix = this.cbMainBatchPrefix.Text;
+            this.printPrefix = this.cbPrintPrefix.Text;
+            this.luxPrefix = this.cbLuxPrefix.Text;
+
         }
         void initArBatchNames()
         {
-            string basePrefix = "Q";
-            // string basePrefix = "W";
+            string basePrefix = this.cbMainBatchPrefix.Text;
+            // string basePrefix = "K";
             this.ARNoBg = basePrefix + "1";
             this.ARBg = basePrefix + "2";
             this.arNoBg2 = basePrefix + "3";
@@ -66,13 +80,13 @@ namespace ShipScrn
             this.arNoBg4 = basePrefix + "7";
             this.arBg4 = basePrefix +  "8";
             // print invoices
-            string printPrefix = "S";
-            // string printPrefix = "X";
+            string printPrefix = this.cbPrintPrefix.Text;
+            // string printPrefix = "S";
             this.ShipTo1 = printPrefix + "1";
             this.ShipTo2 = printPrefix + "2";
             // lux group
-            //string luxPrefix = "U";
-            string luxPrefix = "L";
+            // string luxPrefix = "U";
+            string luxPrefix = this.cbLuxPrefix.Text;
             // string luxPrefix = "Y";
             this.U1 = luxPrefix + "1";
             this.U2 = luxPrefix + "2";
@@ -269,6 +283,8 @@ namespace ShipScrn
 
             catch (Exception e)
             {
+                // added this to shut up the compliler
+                string message = e.Message;
                 Epicor.Mfg.BO.InvcGrpDataSet ds = new Epicor.Mfg.BO.InvcGrpDataSet();
                 // row.GroupID = batchName;
                 invcGrp.GetNewInvcGrp(ds);

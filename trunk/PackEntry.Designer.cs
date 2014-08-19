@@ -567,8 +567,8 @@ namespace ShipScrn
             // 
             this.cbMainBatchPrefix.FormattingEnabled = true;
             this.cbMainBatchPrefix.Items.AddRange(new object[] {
-            "R",
-            "S"});
+            "K",
+            "R"});
             this.cbMainBatchPrefix.Location = new System.Drawing.Point(98, 13);
             this.cbMainBatchPrefix.Name = "cbMainBatchPrefix";
             this.cbMainBatchPrefix.Size = new System.Drawing.Size(83, 21);

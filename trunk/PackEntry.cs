@@ -58,10 +58,14 @@ namespace ShipScrn
             btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
             btnRunTrackTable.Click += new EventHandler(btnRunTrackTable_Click);
             btnBatchCheck.Click += new EventHandler(btnBatchCheck_Click);
+            cbLuxPrefix.Text = "L";
+            cbMainBatchPrefix.Text = "R";
+            cbPrintPrefix.Text = "S";
         }
 
         void btnBatchCheck_Click(object sender, EventArgs e)
         {
+            
             this.basePrefix = this.cbMainBatchPrefix.Text;
             this.printPrefix = this.cbPrintPrefix.Text;
             this.luxPrefix = this.cbLuxPrefix.Text;

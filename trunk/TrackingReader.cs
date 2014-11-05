@@ -67,7 +67,7 @@ namespace ShipScrn
                 and trk_upd_flag = 0
                 and service in ('ground','standard','USPS1ST','USPSPRI','USPSPP','FGRB','F1DP','MGPP','20','F2DP','F1PA')
                 -- and service in ('ground')
-                and pack_num not in ( 999999, 323824 )
+                and pack_num not in ( 323824 )
                  ";
             return sql;
         }
@@ -78,7 +78,7 @@ namespace ShipScrn
 		            pack_num as packSlip,
                     isnull(tracking_no,'NoTracking') as trackingNo,
                     service as serviceClass,
-                    isnull(order_num,0) as orderNo,
+                    isnull(order_num, 0) as orderNo,
                     ship_date as shipDate,
                     isnull(weight,0) as weight,
                     isnull(cost,0) as charge,
@@ -131,7 +131,7 @@ namespace ShipScrn
             if (month.Length == 1) { month = "0" + month; }
             if (day.Length == 1) { day = "0" + day; }
             string yyyymmdd = year + month + day;
-            // yyyymmdd = "20140723";
+            // yyyymmdd = "20141024";
             return yyyymmdd;
         }
         public System.DateTime ConvertStrToDate(string dateStr)
@@ -153,7 +153,11 @@ namespace ShipScrn
                 while (thingsToRead)
                 {
                     decimal packSlip_d = reader.GetDecimal((int)trackDb.packSlip);
-                    if (packSlip_d.Equals(999999)) continue;
+                    if (packSlip_d.Equals(999999))
+                    {
+                        thingsToRead = reader.Read();
+                        continue;
+                    }
                     if (packSlip_d > 999999m)
                     {
                         thingsToRead = reader.Read();

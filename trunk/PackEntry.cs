@@ -58,7 +58,7 @@ namespace ShipScrn
             btnRunTillDone.Click += new EventHandler(btnRunTillDone_Click);
             btnRunTrackTable.Click += new EventHandler(btnRunTrackTable_Click);
             btnBatchCheck.Click += new EventHandler(btnBatchCheck_Click);
-            cbLuxPrefix.Text = "L";
+            cbLuxPrefix.Text = "U";
             cbMainBatchPrefix.Text = "R";
             cbPrintPrefix.Text = "S";
         }
@@ -74,15 +74,26 @@ namespace ShipScrn
         void initArBatchNames()
         {
             string basePrefix = this.cbMainBatchPrefix.Text;
-            // string basePrefix = "K";
+
             this.ARNoBg = basePrefix + "1";
             this.ARBg = basePrefix + "2";
             this.arNoBg2 = basePrefix + "3";
-            this.arBg2 = basePrefix +  "4";
+            this.arBg2 = basePrefix + "4";
             this.arNoBg3 = basePrefix + "5";
-            this.arBg3 = basePrefix +  "6";
+            this.arBg3 = basePrefix + "6";
             this.arNoBg4 = basePrefix + "7";
-            this.arBg4 = basePrefix +  "8";
+            this.arBg4 = basePrefix + "8";
+    /*
+            this.ARNoBg = basePrefix + "3";
+            this.ARBg = basePrefix + "4";
+            this.arNoBg2 = basePrefix + "5";
+            this.arBg2 = basePrefix + "6";
+            this.arNoBg3 = basePrefix + "5";
+            this.arBg3 = basePrefix + "6";
+            this.arNoBg4 = basePrefix + "7";
+            this.arBg4 = basePrefix + "8";
+    */
+
             // print invoices
             string printPrefix = this.cbPrintPrefix.Text;
             // string printPrefix = "S";
@@ -154,8 +165,16 @@ namespace ShipScrn
                 return;
             }
             this.setARBatch(info, batchCount);
+            try
+            {
+                setScreenVars((Shipment)iter.Value);
+            }
+            catch (Exception e3)
+            {
+                string message = e3.Message;
+                this.Refresh();
+            }
 
-            setScreenVars((Shipment)iter.Value);
             this.Refresh();
             this.saveArBatchTextBoxValues();
             string freightMessage = "Frt Free";

@@ -567,6 +567,9 @@ namespace ShipScrn
             // 
             this.cbMainBatchPrefix.FormattingEnabled = true;
             this.cbMainBatchPrefix.Items.AddRange(new object[] {
+            "E",
+            "F",
+            "G",
             "K",
             "R"});
             this.cbMainBatchPrefix.Location = new System.Drawing.Point(98, 13);
@@ -590,7 +593,8 @@ namespace ShipScrn
             this.cbLuxPrefix.FormattingEnabled = true;
             this.cbLuxPrefix.Items.AddRange(new object[] {
             "L",
-            "U"});
+            "U",  
+            "V"});
             this.cbLuxPrefix.Location = new System.Drawing.Point(98, 67);
             this.cbLuxPrefix.Name = "cbLuxPrefix";
             this.cbLuxPrefix.Size = new System.Drawing.Size(83, 21);
